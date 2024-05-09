@@ -23,10 +23,15 @@ public class UserAdvertisement
     public UserAdvertisement(
         Guid id,
         Guid creatorId,
+        
         int number,
         string title, 
         string description,
         string? imageUrl,
+        
+        int sumRating,
+        int countRating,
+        
         DateTimeOffset dateCreated,
         DateTimeOffset dateUpdated,
         DateTimeOffset dateExpired,
@@ -40,9 +45,14 @@ public class UserAdvertisement
         Title = title;
         Description = description;
         ImageUrl = imageUrl;
+
+        SumRating = sumRating;
+        CountRating = countRating;
+        
         DateCreated = dateCreated;
         DateUpdated = dateUpdated;
         DateExpired = dateExpired;
+        
         IsDeleted = isDeleted;
     }
     
@@ -61,6 +71,8 @@ public class UserAdvertisement
             title,
             description,
             imageUrl,
+            0,
+            0,
             DateTimeOffset.Now,
             DateTimeOffset.Now,
             DateTimeOffset.Now,

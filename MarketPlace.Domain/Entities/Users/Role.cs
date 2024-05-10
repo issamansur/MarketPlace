@@ -3,11 +3,20 @@ namespace MarketPlace.Domain.Entities.Users;
 // Add this class, because we can have multiple roles in the future (Not only Users and Admin )
 public class Role
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; private init; }
     public string Title { get; private set; }
 
     public Role(Guid id, string title)
     {
+        // Validation
+        if (id == Guid.Empty)
+            throw new ArgumentException(Errors.NullError(id));
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException(Errors.NullError(title));
+        if (title.Length < Constraints.ROLE_MIN_TITLE_LENGTH || title.Length > Constraints.ROLE_MAX_TITLE_LENGTH)
+            throw new ArgumentException(Errors.RoleTitleLengthError);
+        
+        // Set properties
         Id = id;
         Title = title;
     }

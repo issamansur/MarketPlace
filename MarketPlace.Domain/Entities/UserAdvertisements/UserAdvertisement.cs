@@ -3,10 +3,9 @@ namespace MarketPlace.Domain.Entities.UserAdvertisements;
 // Choose this name to avoid confusion with new possible entity for Advertisement
 public class UserAdvertisement
 {
-    public Guid Id { get; private set; }
-    public Guid CreatorId { get; private set; }
+    public Guid Id { get; private init; }
+    public Guid CreatorId { get; private init; }
     
-    public int Number { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public string? ImageUrl { get; private set; }
@@ -15,16 +14,16 @@ public class UserAdvertisement
     public int CountRating { get; private set; }
     public double Rating => CountRating == 0 ? 0 : (double)SumRating / CountRating;
     
-    public DateTimeOffset DateCreated { get; private set; }
+    public DateTimeOffset DateCreated { get; private init; }
     public DateTimeOffset DateUpdated { get; private set; }
     public DateTimeOffset DateExpired { get; private set; }
-    public bool IsDeleted { get; private set; }
+    
+    public bool IsActive { get; private set; }
 
     public UserAdvertisement(
         Guid id,
         Guid creatorId,
         
-        int number,
         string title, 
         string description,
         string? imageUrl,
@@ -35,13 +34,38 @@ public class UserAdvertisement
         DateTimeOffset dateCreated,
         DateTimeOffset dateUpdated,
         DateTimeOffset dateExpired,
-        bool isDeleted
+        
+        bool isActive
         )
     {
+        // Validation
+        if (id == Guid.Empty)
+            throw new ArgumentException(Errors.NullError(id));
+        if (creatorId == Guid.Empty)
+            throw new ArgumentException(Errors.NullError(creatorId));
+        
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException(Errors.NullError(title));
+        if (title.Length < Constraints.USER_AD_MIN_TITLE_LENGTH || title.Length > Constraints.USER_AD_MAX_TITLE_LENGTH)
+            throw new ArgumentException(Errors.UserAdTitleLengthError);
+        if (string.IsNullOrWhiteSpace(description))
+            throw new ArgumentException(Errors.NullError(description));
+        if (description.Length < Constraints.USER_AD_MIN_DESC_LENGTH || description.Length > Constraints.USER_AD_MAX_DESC_LENGTH)
+            throw new ArgumentException(Errors.UserAdDescLengthError);
+        
+        if (sumRating < 0 || sumRating > Constraints.REVIEW_MAX_RATE * countRating)
+            throw new ArgumentException(Errors.InvalidError(sumRating));
+        if (countRating < 0)
+            throw new ArgumentException(Errors.InvalidError(countRating));
+        
+        if (dateCreated > dateUpdated || dateCreated > dateExpired)
+            throw new ArgumentException(Errors.InvalidError(dateCreated));
+        
+        
+        // Set properties
         Id = id;
         CreatorId = creatorId;
         
-        Number = number;
         Title = title;
         Description = description;
         ImageUrl = imageUrl;
@@ -53,51 +77,59 @@ public class UserAdvertisement
         DateUpdated = dateUpdated;
         DateExpired = dateExpired;
         
-        IsDeleted = isDeleted;
+        IsActive = isActive;
     }
     
     public static UserAdvertisement Create(
         Guid creatorId,
-        int number,
         string title, 
         string description,
         string? imageUrl
         )
     {
+        var date = DateTimeOffset.UtcNow;
+        
         return new UserAdvertisement(
-            Guid.NewGuid(),
+            id: Guid.NewGuid(),
             creatorId,
-            number,
+            
             title,
             description,
             imageUrl,
-            0,
-            0,
-            DateTimeOffset.Now,
-            DateTimeOffset.Now,
-            DateTimeOffset.Now,
-            false
+            
+            sumRating: 0,
+            countRating: 0,
+            
+            dateCreated: date,
+            dateUpdated: date,
+            dateExpired: date.AddDays(Constraints.USER_AD_DAYS_TO_EXPIRE),
+            
+            isActive: true
             );
     }
     
     public void Update(
-        int number,
         string title, 
         string description,
         string? imageUrl
         )
     {
-        Number = number;
         Title = title;
         Description = description;
         ImageUrl = imageUrl;
         
-        DateUpdated = DateTimeOffset.Now;
+        var date = DateTimeOffset.UtcNow;
+        
+        DateUpdated = date;
+        DateExpired = date.AddDays(Constraints.USER_AD_DAYS_TO_EXPIRE);
     }
     
+    // Use SQL query to add new review and update rating instead of this method
+    /*
     public void AddRating(int rating)
     {
         SumRating += rating;
         CountRating++;
     }
+    */
 }

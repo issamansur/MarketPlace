@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace MarketPlace.Domain.Common;
 
-public static class Errors
+public static class DomainErrors
 {
     // Constraints
     public static readonly string RoleTitleLengthError = 
@@ -17,8 +17,8 @@ public static class Errors
     public static readonly string UserAdDescLengthError =
         $"Review description length must be between {Constraints.USER_AD_MIN_DESC_LENGTH} and {Constraints.USER_AD_MAX_TITLE_LENGTH} characters.";
 
-    public static readonly string ReviewRateError = 
-        $"Review rate must be between {Constraints.REVIEW_MIN_RATE} and {Constraints.REVIEW_MAX_RATE}.";
+    public static readonly string ReviewRatingError = 
+        $"Review rate must be between {Constraints.REVIEW_MIN_RATING} and {Constraints.REVIEW_MAX_RATING}.";
 
     public static readonly string ReviewCommentLengthError =
         $"Review comment length must be between {Constraints.REVIEW_MIN_COMMENT_LENGTH} and {Constraints.REVIEW_MAX_COMMENT_LENGTH} characters.";

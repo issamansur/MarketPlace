@@ -6,6 +6,7 @@ public class UserAdvertisement
     public Guid Id { get; private init; }
     public Guid CreatorId { get; private init; }
     
+    public int Number { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public string? ImageUrl { get; private set; }
@@ -24,6 +25,7 @@ public class UserAdvertisement
         Guid id,
         Guid creatorId,
         
+        int number,
         string title, 
         string description,
         string? imageUrl,
@@ -40,27 +42,28 @@ public class UserAdvertisement
     {
         // Validation
         if (id == Guid.Empty)
-            throw new ArgumentException(Errors.NullError(id));
+            throw new ArgumentException(DomainErrors.NullError(id));
         if (creatorId == Guid.Empty)
-            throw new ArgumentException(Errors.NullError(creatorId));
+            throw new ArgumentException(DomainErrors.NullError(creatorId));
         
+        if (number < 0)
+            throw new ArgumentException(DomainErrors.InvalidError(number));
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException(Errors.NullError(title));
+            throw new ArgumentException(DomainErrors.NullError(title));
         if (title.Length < Constraints.USER_AD_MIN_TITLE_LENGTH || title.Length > Constraints.USER_AD_MAX_TITLE_LENGTH)
-            throw new ArgumentException(Errors.UserAdTitleLengthError);
+            throw new ArgumentException(DomainErrors.UserAdTitleLengthError);
         if (string.IsNullOrWhiteSpace(description))
-            throw new ArgumentException(Errors.NullError(description));
+            throw new ArgumentException(DomainErrors.NullError(description));
         if (description.Length < Constraints.USER_AD_MIN_DESC_LENGTH || description.Length > Constraints.USER_AD_MAX_DESC_LENGTH)
-            throw new ArgumentException(Errors.UserAdDescLengthError);
+            throw new ArgumentException(DomainErrors.UserAdDescLengthError);
         
-        if (sumRating < 0 || sumRating > Constraints.REVIEW_MAX_RATE * countRating)
-            throw new ArgumentException(Errors.InvalidError(sumRating));
+        if (sumRating < 0 || sumRating > Constraints.REVIEW_MAX_RATING * countRating)
+            throw new ArgumentException(DomainErrors.InvalidError(sumRating));
         if (countRating < 0)
-            throw new ArgumentException(Errors.InvalidError(countRating));
+            throw new ArgumentException(DomainErrors.InvalidError(countRating));
         
         if (dateCreated > dateUpdated || dateCreated > dateExpired)
-            throw new ArgumentException(Errors.InvalidError(dateCreated));
-        
+            throw new ArgumentException(DomainErrors.InvalidError(dateCreated));
         
         // Set properties
         Id = id;
@@ -93,6 +96,7 @@ public class UserAdvertisement
             id: Guid.NewGuid(),
             creatorId,
             
+            number: 0,
             title,
             description,
             imageUrl,

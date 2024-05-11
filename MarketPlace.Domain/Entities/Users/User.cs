@@ -9,11 +9,11 @@ public class User
     {
         // Validation
         if (id == Guid.Empty)
-            throw new ArgumentException(Errors.NullError(id));
+            throw new ArgumentException(DomainErrors.NullError(id));
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException(Errors.NullError(name));
+            throw new ArgumentException(DomainErrors.NullError(name));
         if (name.Length < Constraints.USER_MIN_NAME_LENGTH || name.Length > Constraints.USER_MAX_NAME_LENGTH)
-            throw new ArgumentException(Errors.UserNameLengthError);
+            throw new ArgumentException(DomainErrors.UserNameLengthError);
         
         // Set properties
         Id = id;

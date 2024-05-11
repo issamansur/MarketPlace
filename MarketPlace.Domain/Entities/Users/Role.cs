@@ -10,11 +10,11 @@ public class Role
     {
         // Validation
         if (id == Guid.Empty)
-            throw new ArgumentException(Errors.NullError(id));
+            throw new ArgumentException(DomainErrors.NullError(id));
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException(Errors.NullError(title));
+            throw new ArgumentException(DomainErrors.NullError(title));
         if (title.Length < Constraints.ROLE_MIN_TITLE_LENGTH || title.Length > Constraints.ROLE_MAX_TITLE_LENGTH)
-            throw new ArgumentException(Errors.RoleTitleLengthError);
+            throw new ArgumentException(DomainErrors.RoleTitleLengthError);
         
         // Set properties
         Id = id;

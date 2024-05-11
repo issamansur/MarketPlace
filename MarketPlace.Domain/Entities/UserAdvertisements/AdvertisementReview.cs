@@ -4,7 +4,7 @@ public class AdvertisementReview
 {
     public Guid Id { get; private init; }
     public Guid AdvertisementId { get; private init; }
-    public Guid ReviewerId { get; private init; }
+    public Guid CreatorId { get; private init; }
     
     public int Rating { get; private set; }
     public string Comment { get; private set; }
@@ -15,7 +15,7 @@ public class AdvertisementReview
     public AdvertisementReview(
         Guid id,
         Guid advertisementId,
-        Guid reviewerId,
+        Guid creatorId,
         int rating,
         string comment,
         DateTimeOffset dateCreated,
@@ -24,24 +24,24 @@ public class AdvertisementReview
     {
         // Validation
         if (id == Guid.Empty)
-            throw new ArgumentException(Errors.NullError(id));
+            throw new ArgumentException(DomainErrors.NullError(id));
         if (advertisementId == Guid.Empty)
-            throw new ArgumentException(Errors.NullError(advertisementId));
-        if (reviewerId == Guid.Empty)
-            throw new ArgumentException(Errors.NullError(reviewerId));
-        if (rating < Constraints.REVIEW_MIN_RATE || rating > Constraints.REVIEW_MAX_RATE)
-            throw new ArgumentException(Errors.ReviewRateError);
+            throw new ArgumentException(DomainErrors.NullError(advertisementId));
+        if (creatorId == Guid.Empty)
+            throw new ArgumentException(DomainErrors.NullError(creatorId));
+        if (rating < Constraints.REVIEW_MIN_RATING || rating > Constraints.REVIEW_MAX_RATING)
+            throw new ArgumentException(DomainErrors.ReviewRatingError);
         if (string.IsNullOrWhiteSpace(comment))
-            throw new ArgumentException(Errors.NullError(comment));
+            throw new ArgumentException(DomainErrors.NullError(comment));
         if (comment.Length < Constraints.REVIEW_MIN_COMMENT_LENGTH || comment.Length > Constraints.REVIEW_MAX_COMMENT_LENGTH)
-            throw new ArgumentException(Errors.ReviewCommentLengthError);
+            throw new ArgumentException(DomainErrors.ReviewCommentLengthError);
         if (dateCreated > dateUpdated)
-            throw new ArgumentException(Errors.InvalidError(dateCreated));
+            throw new ArgumentException(DomainErrors.InvalidError(dateCreated));
         
         // Set properties
         Id = id;
         AdvertisementId = advertisementId;
-        ReviewerId = reviewerId;
+        CreatorId = creatorId;
         Rating = rating;
         Comment = comment;
         DateCreated = dateCreated;
@@ -68,14 +68,14 @@ public class AdvertisementReview
         );
     }
     
-    public void UpdateReview(int rating, string comment)
+    public void Update(int rating, string comment)
     {
-        if (rating < Constraints.REVIEW_MIN_RATE || rating > Constraints.REVIEW_MAX_RATE)
-            throw new ArgumentException(Errors.ReviewRateError);
+        if (rating < Constraints.REVIEW_MIN_RATING || rating > Constraints.REVIEW_MAX_RATING)
+            throw new ArgumentException(DomainErrors.ReviewRatingError);
         if (string.IsNullOrWhiteSpace(comment))
-            throw new ArgumentException(Errors.NullError(comment));
+            throw new ArgumentException(DomainErrors.NullError(comment));
         if (comment.Length < Constraints.REVIEW_MIN_COMMENT_LENGTH || comment.Length > Constraints.REVIEW_MAX_COMMENT_LENGTH)
-            throw new ArgumentException(Errors.ReviewCommentLengthError);
+            throw new ArgumentException(DomainErrors.ReviewCommentLengthError);
         
         Rating = rating;
         Comment = comment;

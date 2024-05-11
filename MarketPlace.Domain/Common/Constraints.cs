@@ -19,8 +19,8 @@ public static class Constraints
     public static readonly int USER_AD_DAYS_TO_EXPIRE = 7;
     
     // Advertisement Review
-    public static readonly int REVIEW_MIN_RATE = 1;
-    public static readonly int REVIEW_MAX_RATE = 5;
+    public static readonly int REVIEW_MIN_RATING = 1;
+    public static readonly int REVIEW_MAX_RATING = 5;
     public static readonly int REVIEW_MIN_COMMENT_LENGTH = 0;
     public static readonly int REVIEW_MAX_COMMENT_LENGTH = 200;
 }

@@ -1,30 +1,29 @@
 using MarketPlace.Application.Enums;
 
-namespace MarketPlace.Application.AdvertisementReviews.Filters;
+namespace MarketPlace.Application.UserAdvertisements.Filters;
 
-public class AdvertisementReviewsFilter
+public class UserAdvertisementsByUserFilter
 {
-    public Guid AdvertisementId { get; }
+    public Guid UserId { get; }
     public int Page { get; }
     public int PageSize { get; }
     public SortTypes SortType { get; }
     public bool IsDesc { get; }
     
-    public AdvertisementReviewsFilter(
-        Guid advertisementId, 
+    public UserAdvertisementsByUserFilter(
+        Guid userId,
         int page = 1, 
         int pageSize = 10, 
         SortTypes sortType = SortTypes.None,
         bool isDesc = false
     )
     {
-        AdvertisementId = advertisementId;
         Page = page;
         PageSize = pageSize;
         SortType = sortType;
         IsDesc = isDesc;
         
-        var validator = new AdvertisementReviewsFilterValidator();
+        var validator = new UserAdvertisementsByUserFilterValidator();
         validator.ValidateAndThrow(this);
     }
 }

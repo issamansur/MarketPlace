@@ -12,13 +12,14 @@ public class CreateAdvertisementReviewCommandHandler: BaseHandler, IRequestHandl
         
         var tenant = GetTenant();
         
-        await tenant.Users.GetByIdAsync(request.UserId, cancellationToken);
+        await tenant.Users.GetByIdAsync(request.CreatorId, cancellationToken);
         await tenant.UserAdvertisements.GetByIdAsync(request.AdvertisementId, cancellationToken);
      
         var advertisementReview = AdvertisementReview.Create(
-            request.AdvertisementId, request.UserId, request.Rating, request.Comment
+            request.AdvertisementId, request.CreatorId, request.Rating, request.Comment
             );
 
+        // TODO: Create custom SQL query to update the advertisement rating
         await tenant.AdvertisementReviews.CreateAsync(advertisementReview, cancellationToken);
         await tenant.CommitAsync(cancellationToken);
 

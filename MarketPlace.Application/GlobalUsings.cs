@@ -1,3 +1,4 @@
+global using MarketPlace.Domain.Common;
 global using MarketPlace.Domain.Entities.Users;
 global using MarketPlace.Domain.Entities.UserAdvertisements;
 

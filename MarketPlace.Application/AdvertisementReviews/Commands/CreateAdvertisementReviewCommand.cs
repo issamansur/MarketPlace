@@ -3,14 +3,14 @@ namespace MarketPlace.Application.AdvertisementReviews.Commands;
 public class CreateAdvertisementReviewCommand: IRequest<Guid>
 {
     public Guid AdvertisementId { get; }
-    public Guid UserId { get; }
+    public Guid CreatorId { get; }
     public int Rating { get; }
     public string Comment { get; }
 
-    public CreateAdvertisementReviewCommand(Guid advertisementId, Guid userId, string comment, int rating)
+    public CreateAdvertisementReviewCommand(Guid advertisementId, Guid creatorId, string comment, int rating)
     {
         AdvertisementId = advertisementId;
-        UserId = userId;
+        CreatorId = creatorId;
         Comment = comment;
         Rating = rating;
         

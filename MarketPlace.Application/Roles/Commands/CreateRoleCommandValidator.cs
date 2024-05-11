@@ -6,7 +6,7 @@ public class CreateRoleCommandValidator: AbstractValidator<CreateRoleCommand>
     {
         RuleFor(x => x.Title)
             .NotNull().WithMessage("Title is required.")
-            .NotEmpty().WithMessage("Title cannot be empty.")
-            .MaximumLength(20).WithMessage("Title must not exceed 20 characters.");
+            .MinimumLength(Constraints.ROLE_MIN_TITLE_LENGTH)
+            .MaximumLength(Constraints.ROLE_MAX_TITLE_LENGTH).WithMessage(DomainErrors.RoleTitleLengthError);
     }
 }

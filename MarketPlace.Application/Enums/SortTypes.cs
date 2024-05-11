@@ -1,4 +1,4 @@
-namespace MarketPlace.Application.AdvertisementReviews.Filters;
+namespace MarketPlace.Application.Enums;
 
 public enum SortTypes
 {

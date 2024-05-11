@@ -6,8 +6,8 @@ public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
     {
         RuleFor(x => x.Name)
             .NotNull().WithMessage("Name is required.")
-            .NotEmpty().WithMessage("Name cannot be empty.")
-            .MinimumLength(5).MaximumLength(20).WithMessage("Name must be between 5 and 20 characters.")
+            .MinimumLength(Constraints.USER_MIN_NAME_LENGTH)
+            .MaximumLength(Constraints.USER_MAX_NAME_LENGTH).WithMessage(DomainErrors.UserNameLengthError)
             .Matches("^[a-zA-Zа-яА-Я0-9]*$").WithMessage("Name must contain only letters and numbers.");
     }
 }

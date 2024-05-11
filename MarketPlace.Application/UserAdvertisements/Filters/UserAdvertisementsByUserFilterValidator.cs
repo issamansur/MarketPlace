@@ -1,12 +1,11 @@
-namespace MarketPlace.Application.AdvertisementReviews.Filters;
+namespace MarketPlace.Application.UserAdvertisements.Filters;
 
-public class AdvertisementReviewsFilterValidator: AbstractValidator<AdvertisementReviewsFilter>
+public class UserAdvertisementsByUserFilterValidator: AbstractValidator<UserAdvertisementsByUserFilter>
 {
-    public AdvertisementReviewsFilterValidator()
+    public UserAdvertisementsByUserFilterValidator()
     {
-        // Bad solution, with hardcoded values
-        RuleFor(x => x.AdvertisementId)
-            .NotEmpty().WithMessage("AdvertisementId is required.");
+        RuleFor(x => x.UserId)
+            .NotEmpty().WithMessage("UserId is required.");
         
         RuleFor(x => x.Page)
             .GreaterThan(0).WithMessage(ApplicationErrors.InvalidPageError);

@@ -16,7 +16,7 @@ public class CreateRoleCommandHandler: BaseHandler, IRequestHandler<CreateRoleCo
         
         if (await tenant.Roles.TryGetByNameAsync(role.Title) != null)
         {
-            throw new InvalidOperationException("Role with the same name already exists");
+            throw new InvalidOperationException(ApplicationErrors.AlreadyExistError(role));
         }
         
         Guid roleGuid = await tenant.Roles.CreateAsync(role, cancellationToken);

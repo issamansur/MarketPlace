@@ -11,7 +11,7 @@ public class CreateUserCommandHandler: BaseHandler, IRequestHandler<CreateUserCo
         ArgumentNullException.ThrowIfNull(request, nameof(request));
         
         var tenant = GetTenant();
-        var user = User.Create(request.Name);
+        var user = User.Create(request.RoleId, request.Name);
         
         await tenant.Users.CreateAsync(user, cancellationToken);
         await tenant.CommitAsync(cancellationToken);

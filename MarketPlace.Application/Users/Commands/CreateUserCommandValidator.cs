@@ -4,6 +4,9 @@ public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
 {
     public CreateUserCommandValidator()
     {
+        RuleFor(x => x.RoleId)
+            .NotNull().NotEmpty().WithMessage("Role is required.");
+        
         RuleFor(x => x.Name)
             .NotNull().WithMessage("Name is required.")
             .MinimumLength(Constraints.USER_MIN_NAME_LENGTH)

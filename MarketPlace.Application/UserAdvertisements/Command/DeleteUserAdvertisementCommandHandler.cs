@@ -20,7 +20,7 @@ public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
             throw new UnauthorizedAccessException(ApplicationErrors.UnauthorizedAccessError);
         }
         
-        await tenant.UserAdvertisements.DeleteAsync(userAdvertisement, cancellationToken);
+        await tenant.UserAdvertisements.DeleteAsync(userAdvertisement.Id, cancellationToken);
         await tenant.CommitAsync(cancellationToken);
 
         return userAdvertisement.Id;

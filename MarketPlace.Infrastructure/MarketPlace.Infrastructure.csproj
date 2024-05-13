@@ -9,10 +9,15 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.3.24172.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.3.24172.4" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-preview.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MarketPlace.Application\MarketPlace.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\PostgreSQL\" />
     </ItemGroup>
 
 </Project>

@@ -7,18 +7,21 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
         builder.ToTable("Users");
 
         builder.HasKey(x => x.Id)
-            .HasName("PK_Users_Id");
+            .HasName("PK_Users");
         
         builder.Property(x => x.Id)
             .HasColumnName("Id")
+            .HasComment("Уникальный идентификатор пользователя")
             .IsRequired();
         
         builder.Property(x => x.RoleId)
             .HasColumnName("Role_Id")
+            .HasComment("Идентификатор роли")
             .IsRequired();
         
         builder.Property(x => x.Name)
-            .HasColumnName("First_Name")
+            .HasColumnName("Name")
+            .HasComment("Имя пользователя")
             .HasMaxLength(Constraints.USER_MAX_NAME_LENGTH)
             .IsRequired();
         

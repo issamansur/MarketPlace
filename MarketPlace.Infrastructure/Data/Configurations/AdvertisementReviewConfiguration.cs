@@ -10,22 +10,28 @@ public class AdvertisementReviewConfiguration: IEntityTypeConfiguration<Advertis
             .HasName("PK_Advertisement_Reviews");
 
         builder.Property(x => x.Id)
-            .HasColumnName("Id");
+            .HasColumnName("Id")
+            .HasComment("Уникальный идентификатор отзыва")
+            .IsRequired();
 
         builder.Property(x => x.AdvertisementId)
             .HasColumnName("Advertisement_Id")
+            .HasComment("Идентификатор объявления")
             .IsRequired();
         
         builder.Property(x => x.CreatorId)
             .HasColumnName("Creator_Id")
+            .HasComment("Идентификатор создателя отзыва")
             .IsRequired();
         
         builder.Property(x => x.Rating)
             .HasColumnName("Rating")
+            .HasComment("Оценка")
             .IsRequired();
 
         builder.Property(x => x.Comment)
             .HasColumnName("Comment")
+            .HasComment("Комментарий")
             .HasMaxLength(Constraints.REVIEW_MAX_COMMENT_LENGTH);
         // .IsRequired();
         // We can't make this, because we want to allow empty comments
@@ -33,10 +39,12 @@ public class AdvertisementReviewConfiguration: IEntityTypeConfiguration<Advertis
         
         builder.Property(x => x.DateCreated)
             .HasColumnName("Date_Created")
+            .HasComment("Дата создания отзыва")
             .IsRequired();
         
         builder.Property(x => x.DateUpdated)
             .HasColumnName("Date_Updated")
+            .HasComment("Дата обновления отзыва")
             .IsRequired();
         
         builder.HasOne<UserAdvertisement>()

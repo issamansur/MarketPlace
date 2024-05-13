@@ -11,10 +11,12 @@ public class RoleConfiguration: IEntityTypeConfiguration<Role>
         
         builder.Property(x => x.Id)
             .HasColumnName("Id")
+            .HasComment("Уникальный идентификатор роли")
             .IsRequired();
 
         builder.Property(x => x.Title)
             .HasColumnName("Title")
+            .HasComment("Название роли")
             .HasMaxLength(Constraints.ROLE_MAX_TITLE_LENGTH)
             .IsRequired();
     }

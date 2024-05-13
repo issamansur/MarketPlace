@@ -21,14 +21,16 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
                 var advertisementId = entity.AdvertisementId;
                 var rating = entity.Rating;
                 var sql = $"UPDATE User_Advertisements " +
-                          $"SET Sum_Rating = Sum_Rating + {rating}, Count_Rating = Count_Rating + 1 " +
+                          $"SET Sum_Rating = Sum_Rating + {rating}, " +
+                          $"Count_Rating = Count_Rating + 1, " +
+                          $"Rating = (Sum_Rating + {rating}) / (Count_Rating + 1) " +
                           $"WHERE Id = '{advertisementId}'";
                 
                 await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
 
-                return advertisementId;
+                return entity.Id;
             }
             catch (Exception)
             {
@@ -52,8 +54,10 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
 
                 var advertisementId = entity.AdvertisementId;
                 var newRating = entity.Rating;
+                var diff = newRating - oldRating;
                 var sql = $"UPDATE User_Advertisements " +
-                          $"SET Sum_Rating = Sum_Rating - {oldRating} + {newRating} " +
+                          $"SET Sum_Rating = Sum_Rating + {diff}, " +
+                          $"Rating = (Sum_Rating + {diff}) / Count_Rating " +
                           $"WHERE Id = '{advertisementId}'";
                 
                 await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
@@ -105,7 +109,9 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
                 var advertisementId = entity.AdvertisementId;
                 var rating = entity.Rating;
                 var sql = $"UPDATE User_Advertisements " +
-                          $"SET Sum_Rating = Sum_Rating - {rating}, Count_Rating = Count_Rating - 1 " +
+                          $"SET Rating_Sum = Rating_Sum - {rating}, " +
+                          $"Rating_Count = Rating_Count - 1, " +
+                          $"Rating = CASE WHEN Rating_Count = 1 THEN 0 ELSE (Rating_Sum - {rating} / (Rating_Count - 1) END " +
                           $"WHERE Id = '{advertisementId}'";
                 
                 await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);

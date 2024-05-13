@@ -11,9 +11,9 @@ public class UserAdvertisement
     public string Description { get; private set; }
     public string? ImageUrl { get; private set; }
     
-    public int SumRating { get; private set; }
-    public int CountRating { get; private set; }
-    public double Rating => CountRating == 0 ? 0 : (double)SumRating / CountRating;
+    public int RatingSum { get; private set; }
+    public int RatingCount { get; private set; }
+    public double Rating { get; private set; }
     
     public DateTimeOffset DateCreated { get; private init; }
     public DateTimeOffset DateUpdated { get; private set; }
@@ -30,8 +30,9 @@ public class UserAdvertisement
         string description,
         string? imageUrl,
         
-        int sumRating,
-        int countRating,
+        int ratingSum,
+        int ratingCount,
+        double rating,
         
         DateTimeOffset dateCreated,
         DateTimeOffset dateUpdated,
@@ -57,10 +58,12 @@ public class UserAdvertisement
         if (description.Length < Constraints.USER_AD_MIN_DESC_LENGTH || description.Length > Constraints.USER_AD_MAX_DESC_LENGTH)
             throw new ArgumentException(DomainErrors.UserAdDescLengthError);
         
-        if (sumRating < 0 || sumRating > Constraints.REVIEW_MAX_RATING * countRating)
-            throw new ArgumentException(DomainErrors.InvalidError(sumRating));
-        if (countRating < 0)
-            throw new ArgumentException(DomainErrors.InvalidError(countRating));
+        if (ratingSum < 0 || ratingSum > Constraints.REVIEW_MAX_RATING * ratingCount)
+            throw new ArgumentException(DomainErrors.InvalidError(ratingSum));
+        if (ratingCount < 0)
+            throw new ArgumentException(DomainErrors.InvalidError(ratingCount));
+        if (rating < 0 || rating > Constraints.REVIEW_MAX_RATING)
+            throw new ArgumentException(DomainErrors.InvalidError(rating));
         
         if (dateCreated > dateUpdated || dateCreated > dateExpired)
             throw new ArgumentException(DomainErrors.InvalidError(dateCreated));
@@ -73,8 +76,9 @@ public class UserAdvertisement
         Description = description;
         ImageUrl = imageUrl;
 
-        SumRating = sumRating;
-        CountRating = countRating;
+        RatingSum = ratingSum;
+        RatingCount = ratingCount;
+        Rating = rating;
         
         DateCreated = dateCreated;
         DateUpdated = dateUpdated;
@@ -101,8 +105,9 @@ public class UserAdvertisement
             description,
             imageUrl,
             
-            sumRating: 0,
-            countRating: 0,
+            ratingSum: 0,
+            ratingCount: 0,
+            rating: 0,
             
             dateCreated: date,
             dateUpdated: date,
@@ -118,6 +123,17 @@ public class UserAdvertisement
         string? imageUrl
         )
     {
+        
+        // Validation
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException(DomainErrors.NullError(title));
+        if (title.Length < Constraints.USER_AD_MIN_TITLE_LENGTH || title.Length > Constraints.USER_AD_MAX_TITLE_LENGTH)
+            throw new ArgumentException(DomainErrors.UserAdTitleLengthError);
+        if (string.IsNullOrWhiteSpace(description))
+            throw new ArgumentException(DomainErrors.NullError(description));
+        if (description.Length < Constraints.USER_AD_MIN_DESC_LENGTH || description.Length > Constraints.USER_AD_MAX_DESC_LENGTH)
+            throw new ArgumentException(DomainErrors.UserAdDescLengthError);
+        
         Title = title;
         Description = description;
         ImageUrl = imageUrl;
@@ -132,8 +148,8 @@ public class UserAdvertisement
     /*
     public void AddRating(int rating)
     {
-        SumRating += rating;
-        CountRating++;
+        RatingSum += rating;
+        RatingCount++;
     }
     */
 }

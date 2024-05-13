@@ -14,7 +14,7 @@ public class CreateRoleCommandHandler: BaseHandler, IRequestHandler<CreateRoleCo
         
         var tenant = GetTenant();
         
-        if (await tenant.Roles.TryGetByNameAsync(role.Title) != null)
+        if (await tenant.Roles.TryGetByTitleAsync(role.Title) != null)
         {
             throw new InvalidOperationException(ApplicationErrors.AlreadyExistError(role));
         }

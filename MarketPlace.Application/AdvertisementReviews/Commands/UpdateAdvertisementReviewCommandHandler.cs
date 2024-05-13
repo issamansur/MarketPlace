@@ -25,7 +25,8 @@ public class UpdateAdvertisementReviewCommandHandler: BaseHandler, IRequestHandl
         
         advertisementReview.Update(request.Rating, request.Comment);
         await tenant.AdvertisementReviews.UpdateAsync(advertisementReview, cancellationToken);
-        await tenant.CommitAsync(cancellationToken);
+        // Not needed because the rating is updated in the same transaction
+        //await tenant.CommitAsync(cancellationToken);
 
         return advertisementReview.Id;
     }

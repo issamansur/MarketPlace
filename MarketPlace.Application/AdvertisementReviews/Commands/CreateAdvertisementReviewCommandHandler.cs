@@ -21,7 +21,8 @@ public class CreateAdvertisementReviewCommandHandler: BaseHandler, IRequestHandl
 
         // TODO: Create custom SQL query to update the advertisement rating
         await tenant.AdvertisementReviews.CreateAsync(advertisementReview, cancellationToken);
-        await tenant.CommitAsync(cancellationToken);
+        // Not needed because the rating is updated in the same transaction
+        //await tenant.CommitAsync(cancellationToken);
 
         return advertisementReview.Id;
     }

@@ -18,6 +18,7 @@ public class UserAdvertisementsByUserFilter
         bool isDesc = false
     )
     {
+        UserId = userId;
         Page = page;
         PageSize = pageSize;
         SortType = sortType;

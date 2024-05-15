@@ -13,7 +13,6 @@ public class UpdateAdvertisementReviewCommandHandler: BaseHandler, IRequestHandl
         var tenant = GetTenant();
         
         await tenant.Users.GetByIdAsync(request.ChangerId, cancellationToken);
-        await tenant.UserAdvertisements.GetByIdAsync(request.AdvertisementId, cancellationToken);
      
         // TODO: Create custom SQL query to update the advertisement rating
         var advertisementReview = await tenant.AdvertisementReviews.GetByIdAsync(request.Id, cancellationToken);

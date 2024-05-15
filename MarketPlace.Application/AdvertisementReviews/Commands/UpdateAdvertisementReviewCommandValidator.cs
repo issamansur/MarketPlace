@@ -4,9 +4,6 @@ public class UpdateAdvertisementReviewCommandValidator: AbstractValidator<Update
 {
     public UpdateAdvertisementReviewCommandValidator()
     {
-        RuleFor(x => x.AdvertisementId)
-            .NotNull().WithMessage("AdvertisementReviewId is required.")
-            .NotEmpty().WithMessage("AdvertisementReviewId cannot be empty.");
         RuleFor(x => x.ChangerId)
             .NotNull().WithMessage("ChangerId is required.")
             .NotEmpty().WithMessage("ChangerId cannot be empty.");

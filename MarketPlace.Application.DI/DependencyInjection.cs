@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MarketPlace.Application;
+namespace MarketPlace.Application.DI;
 
 public static class DependencyInjection
 {

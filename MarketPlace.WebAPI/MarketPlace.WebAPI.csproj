@@ -17,6 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MarketPlace.Application.DI\MarketPlace.Application.DI.csproj" />
+      <ProjectReference Include="..\MarketPlace.Contracts\MarketPlace.Contracts.csproj" />
       <ProjectReference Include="..\MarketPlace.Infrastructure\MarketPlace.Infrastructure.csproj" />
     </ItemGroup>
 

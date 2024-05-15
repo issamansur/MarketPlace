@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketPlace.WebAPI", "Marke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketPlace.Contracts", "MarketPlace.Contracts\MarketPlace.Contracts.csproj", "{8677984A-A5AD-42B8-BE2E-92AA533BE350}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketPlace.Application.DI", "MarketPlace.Application.DI\MarketPlace.Application.DI.csproj", "{3A6925B3-6EF8-4A4D-8363-2A2B7FCF9C3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{8677984A-A5AD-42B8-BE2E-92AA533BE350}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8677984A-A5AD-42B8-BE2E-92AA533BE350}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8677984A-A5AD-42B8-BE2E-92AA533BE350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A6925B3-6EF8-4A4D-8363-2A2B7FCF9C3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A6925B3-6EF8-4A4D-8363-2A2B7FCF9C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A6925B3-6EF8-4A4D-8363-2A2B7FCF9C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A6925B3-6EF8-4A4D-8363-2A2B7FCF9C3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,7 @@
+using MarketPlace.Application.DI;
 using MarketPlace.Infrastructure.Data;
+using MarketPlace.Contracts;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
     // Add services from other layers to the container
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure();
+    builder.Services.AddContracts();
 }
 
 // Configure connection to the database

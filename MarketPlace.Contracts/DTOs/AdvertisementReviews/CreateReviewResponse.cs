@@ -1,5 +1,5 @@
 namespace MarketPlace.Contracts.DTOs.AdvertisementReviews;
 
-public record CreateAdvertisementResponse(
+public record CreateReviewResponse(
     Guid Id
     );

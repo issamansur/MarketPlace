@@ -7,8 +7,10 @@ global using MarketPlace.Domain.Entities.UserAdvertisements;
 
 global using MarketPlace.Application.Common;
 global using MarketPlace.Application.Repositories;
+global using MarketPlace.Application.Services;
 
 global using MarketPlace.Infrastructure.Data.Common;
 global using MarketPlace.Infrastructure.Data.Repositories;
+global using MarketPlace.Infrastructure.Services;
 
 

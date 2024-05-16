@@ -30,13 +30,15 @@ public class CreateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         
         if (request.Image is not null)
         {
+            string directory = Path.Combine("UserAdvertisements", request.CreatorId.ToString());
+            string fileWithExtension = $"{userAdvertisement.Id}{request.Extension}";
+            
             imageUrl = Path.Combine(
-                "UserAdvertisements",
-                request.CreatorId.ToString(), 
-                $"{userAdvertisement.Id}{request.Extension}"
+                directory,
+                fileWithExtension
                 );
             
-            await _imageService.UploadImageAsync(request.Image, imageUrl);
+            await _imageService.UploadImageAsync(request.Image, directory, fileWithExtension);
         }
         else
         {

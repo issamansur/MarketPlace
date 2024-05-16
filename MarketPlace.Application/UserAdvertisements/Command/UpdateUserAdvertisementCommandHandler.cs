@@ -31,13 +31,15 @@ public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         
         if (request.Image is not null)
         {
+            string directory = Path.Combine("UserAdvertisements", advertisement.CreatorId.ToString());
+            string fileWithExtension = $"{advertisement.Id}{request.Extension}";
+            
             imageUrl = Path.Combine(
-                "UserAdvertisements",
-                advertisement.CreatorId.ToString(), 
-                $"{advertisement.Id}{request.Extension}"
+                directory,
+                fileWithExtension
             );
             
-            await _imageService.UpdateImageAsync(request.Image, imageUrl);
+            await _imageService.UpdateImageAsync(request.Image, directory, fileWithExtension);
         }
         
         advertisement.Update(

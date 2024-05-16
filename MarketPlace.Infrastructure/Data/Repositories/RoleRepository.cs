@@ -10,7 +10,6 @@ public class RoleRepository: BaseRepository, IRoleRepository
     public async Task<Guid> CreateAsync(Role entity, CancellationToken cancellationToken)
     {
         Context.Roles.Add(entity);
-        await Context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }
 

@@ -9,7 +9,6 @@ public class UserRepository: BaseRepository, IUserRepository
     public async Task<Guid> CreateAsync(User entity, CancellationToken cancellationToken)
     {
         Context.Users.Add(entity);
-        await Context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }
 

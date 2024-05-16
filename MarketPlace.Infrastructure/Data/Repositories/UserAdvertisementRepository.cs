@@ -15,20 +15,17 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
         // TODO: Add check on max count of advertisements
         
         Context.UserAdvertisements.Add(entity);
-        await Context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }
 
     public async Task UpdateAsync(UserAdvertisement entity, CancellationToken cancellationToken)
     {
         Context.UserAdvertisements.Update(entity);
-        await Context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(UserAdvertisement entity, CancellationToken cancellationToken)
     {
         Context.UserAdvertisements.Remove(entity);
-        await Context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<UserAdvertisement> GetByIdAsync(Guid id, CancellationToken cancellationToken)

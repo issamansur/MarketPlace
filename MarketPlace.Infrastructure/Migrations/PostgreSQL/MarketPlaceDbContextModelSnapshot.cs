@@ -107,6 +107,7 @@ namespace MarketPlace.Infrastructure.Migrations.PostgreSql
                         .HasComment("Описание объявления");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Image_Url")
                         .HasComment("Ссылка на изображение");

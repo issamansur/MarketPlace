@@ -9,7 +9,7 @@ public class UserAdvertisement
     public int Number { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
-    public string? ImageUrl { get; private set; }
+    public string ImageUrl { get; private set; }
     
     public int RatingSum { get; private set; }
     public int RatingCount { get; private set; }
@@ -28,7 +28,7 @@ public class UserAdvertisement
         int number,
         string title, 
         string description,
-        string? imageUrl,
+        string imageUrl,
         
         int ratingSum,
         int ratingCount,
@@ -90,8 +90,8 @@ public class UserAdvertisement
     public static UserAdvertisement Create(
         Guid creatorId,
         string title, 
-        string description,
-        string? imageUrl
+        string description
+        //string? imageUrl
         )
     {
         var date = DateTimeOffset.UtcNow;
@@ -103,7 +103,7 @@ public class UserAdvertisement
             number: 0,
             title,
             description,
-            imageUrl,
+            imageUrl: "",
             
             ratingSum: 0,
             ratingCount: 0,
@@ -120,7 +120,7 @@ public class UserAdvertisement
     public void Update(
         string title, 
         string description,
-        string? imageUrl
+        string imageUrl
         )
     {
         
@@ -142,6 +142,19 @@ public class UserAdvertisement
         
         DateUpdated = date;
         DateExpired = date.AddDays(Constraints.USER_AD_DAYS_TO_EXPIRE);
+    }
+    
+    public void SetImageUrl(string imageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(imageUrl))
+            throw new ArgumentException(DomainErrors.NullError(imageUrl));
+        
+        ImageUrl = imageUrl;
+    }
+    
+    public void Deactivate()
+    {
+        IsActive = false;
     }
     
     // Use SQL query to add new review and update rating instead of this method

@@ -15,8 +15,10 @@ public class UserAdvertisementMappingProfile: IRegister
             .Map(dest => dest.CreatorId, src => src.CreatorId)
             .Map(dest => dest.Title, src => src.Title)
             .Map(dest => dest.Description, src => src.Description)
-            .Map(dest => dest.ImageUrl, 
-                src => src.Image != null ? src.Image.OpenReadStream() : null);
+            .Map(dest => dest.Image, 
+                src => src.Image != null ? src.Image.OpenReadStream() : null)
+            .Map(dest => dest.Extension, 
+                src => src.Image != null ? Path.GetExtension(src.Image.FileName) : null);
         
         config.NewConfig<UserAdvertisement, GetUserAdvertisementResponse>()
             .Map(dest => dest.Id, src => src.Id)
@@ -35,8 +37,10 @@ public class UserAdvertisementMappingProfile: IRegister
             .Map(dest => dest.ChangerId, src => src.ChangerId)
             .Map(dest => dest.Title, src => src.Title)
             .Map(dest => dest.Description, src => src.Description)
-            .Map(dest => dest.ImageUrl, 
-                src => src.Image != null ? src.Image.OpenReadStream() : null);
+            .Map(dest => dest.Image, 
+                src => src.Image != null ? src.Image.OpenReadStream() : null)
+            .Map(dest => dest.Extension,
+                src => src.Image != null ? Path.GetExtension(src.Image.FileName) : null);
         
         config.NewConfig<DeleteUserAdvertisementRequest, DeleteUserAdvertisementCommand>()
             .Map(dest => dest.Id, src => src.Id);

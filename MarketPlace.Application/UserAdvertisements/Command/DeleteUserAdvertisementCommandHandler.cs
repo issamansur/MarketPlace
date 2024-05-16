@@ -1,10 +1,15 @@
+using MarketPlace.Application.Services;
+
 namespace MarketPlace.Application.UserAdvertisements.Command;
 
 public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<DeleteUserAdvertisementCommand, Guid>
 {
-    public DeleteUserAdvertisementCommandHandler(ITenantFactory tenantFactory)
+    private readonly IImageService _imageService;
+    public DeleteUserAdvertisementCommandHandler(ITenantFactory tenantFactory, IImageService imageService)
         : base(tenantFactory)
     {
+        ArgumentNullException.ThrowIfNull(imageService, nameof(imageService));
+        _imageService = imageService;
     }
 
     public async Task<Guid> Handle(DeleteUserAdvertisementCommand request, CancellationToken cancellationToken)
@@ -19,6 +24,9 @@ public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         {
             throw new UnauthorizedAccessException(ApplicationErrors.UnauthorizedAccessError);
         }
+        
+        // At first, we need to delete the image from the storage... or not?
+        await _imageService.DeleteImageAsync(userAdvertisement.ImageUrl);
         
         await tenant.UserAdvertisements.DeleteAsync(userAdvertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);

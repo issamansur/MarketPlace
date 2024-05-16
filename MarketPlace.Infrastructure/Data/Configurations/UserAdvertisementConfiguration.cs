@@ -39,7 +39,8 @@ public class UserAdvertisementConfiguration: IEntityTypeConfiguration<UserAdvert
 
         builder.Property(x => x.ImageUrl)
             .HasColumnName("Image_Url")
-            .HasComment("Ссылка на изображение");
+            .HasComment("Ссылка на изображение")
+            .IsRequired();
         
         
         builder.Property(x => x.RatingCount)

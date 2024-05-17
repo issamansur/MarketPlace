@@ -12,13 +12,13 @@ public class UserAdvertisementMappingProfile: IRegister
     {
         // Commands
         config.NewConfig<CreateUserAdvertisementRequest, CreateUserAdvertisementCommand>()
-            .Map(dest => dest.CreatorId, src => src.CreatorId)
-            .Map(dest => dest.Title, src => src.Title)
-            .Map(dest => dest.Description, src => src.Description)
-            .Map(dest => dest.Image, 
-                src => src.Image != null ? src.Image.OpenReadStream() : null)
-            .Map(dest => dest.Extension, 
-                src => src.Image != null ? Path.GetExtension(src.Image.FileName) : null);
+            .ConstructUsing(src => new CreateUserAdvertisementCommand(
+                src.CreatorId,
+                src.Title,
+                src.Description,
+                src.Image != null ? src.Image.OpenReadStream() : null,
+                src.Image != null ? Path.GetExtension(src.Image.FileName) : null
+            ));
         
         config.NewConfig<UserAdvertisement, GetUserAdvertisementResponse>()
             .Map(dest => dest.Id, src => src.Id)
@@ -33,17 +33,18 @@ public class UserAdvertisementMappingProfile: IRegister
             .Map(dest => dest.DateExpired, src => src.DateExpired);
         
         config.NewConfig<UpdateUserAdvertisementRequest, UpdateUserAdvertisementCommand>()
-            .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.ChangerId, src => src.ChangerId)
-            .Map(dest => dest.Title, src => src.Title)
-            .Map(dest => dest.Description, src => src.Description)
-            .Map(dest => dest.Image, 
-                src => src.Image != null ? src.Image.OpenReadStream() : null)
-            .Map(dest => dest.Extension,
-                src => src.Image != null ? Path.GetExtension(src.Image.FileName) : null);
+            .ConstructUsing(src => new UpdateUserAdvertisementCommand(
+                src.Id,
+                src.ChangerId,
+                src.Title,
+                src.Description,
+                src.Image != null ? src.Image.OpenReadStream() : null,
+                src.Image != null ? Path.GetExtension(src.Image.FileName) : null
+            ));
         
         config.NewConfig<DeleteUserAdvertisementRequest, DeleteUserAdvertisementCommand>()
-            .Map(dest => dest.Id, src => src.Id);
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.ChangerId, src => src.ChangerId);
         
         // Queries
         config.NewConfig<GetUserAdvertisementRequest, GetUserAdvertisementQuery>()

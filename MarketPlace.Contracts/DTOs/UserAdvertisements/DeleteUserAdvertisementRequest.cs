@@ -1,3 +1,4 @@
 namespace MarketPlace.Contracts.DTOs.UserAdvertisements;
 
-public record DeleteUserAdvertisementRequest(Guid Id);
+// TODO: ChangerId should be generated from the token
+public record DeleteUserAdvertisementRequest(Guid Id, Guid ChangerId);

@@ -2,7 +2,7 @@ using MarketPlace.Application.Services;
 
 namespace MarketPlace.Application.UserAdvertisements.Command;
 
-public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<DeleteUserAdvertisementCommand, Guid>
+public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<DeleteUserAdvertisementCommand>
 {
     private readonly IImageService _imageService;
     public DeleteUserAdvertisementCommandHandler(ITenantFactory tenantFactory, IImageService imageService)
@@ -12,7 +12,7 @@ public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         _imageService = imageService;
     }
 
-    public async Task<Guid> Handle(DeleteUserAdvertisementCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserAdvertisementCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request, nameof(request));
         
@@ -30,7 +30,5 @@ public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         
         await tenant.UserAdvertisements.DeleteAsync(userAdvertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);
-
-        return userAdvertisement.Id;
     }
 }

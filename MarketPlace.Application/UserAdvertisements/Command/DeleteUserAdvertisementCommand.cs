@@ -1,6 +1,6 @@
 namespace MarketPlace.Application.UserAdvertisements.Command;
 
-public class DeleteUserAdvertisementCommand: IRequest<Guid>
+public class DeleteUserAdvertisementCommand: IRequest
 {
     public Guid Id { get; }
     public Guid ChangerId { get; }

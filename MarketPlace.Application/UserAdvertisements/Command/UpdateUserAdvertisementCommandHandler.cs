@@ -2,7 +2,7 @@ using MarketPlace.Application.Services;
 
 namespace MarketPlace.Application.UserAdvertisements.Command;
 
-public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<UpdateUserAdvertisementCommand, Guid>
+public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<UpdateUserAdvertisementCommand>
 {
     private readonly IImageService _imageService;
     
@@ -13,7 +13,7 @@ public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         _imageService = imageService;
     }
     
-    public async Task<Guid> Handle(UpdateUserAdvertisementCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateUserAdvertisementCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request, nameof(request));
         
@@ -52,7 +52,5 @@ public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         
         await tenant.UserAdvertisements.UpdateAsync(advertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);
-        
-        return advertisement.Id;
     }
 }

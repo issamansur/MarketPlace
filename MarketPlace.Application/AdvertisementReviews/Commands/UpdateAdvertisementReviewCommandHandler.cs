@@ -1,12 +1,12 @@
 namespace MarketPlace.Application.AdvertisementReviews.Commands;
 
-public class UpdateAdvertisementReviewCommandHandler: BaseHandler, IRequestHandler<UpdateAdvertisementReviewCommand, Guid>
+public class UpdateAdvertisementReviewCommandHandler: BaseHandler, IRequestHandler<UpdateAdvertisementReviewCommand>
 {
     public UpdateAdvertisementReviewCommandHandler(ITenantFactory factory) : base(factory)
     {
     }
 
-    public async Task<Guid> Handle(UpdateAdvertisementReviewCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateAdvertisementReviewCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request, nameof(request));
         
@@ -26,7 +26,5 @@ public class UpdateAdvertisementReviewCommandHandler: BaseHandler, IRequestHandl
         await tenant.AdvertisementReviews.UpdateAsync(advertisementReview, cancellationToken);
         // Not needed because the rating is updated in the same transaction
         //await tenant.CommitAsync(cancellationToken);
-
-        return advertisementReview.Id;
     }
 }

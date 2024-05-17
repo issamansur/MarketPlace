@@ -29,6 +29,6 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
             .WithMany()
             .HasForeignKey(x => x.RoleId)
             .HasConstraintName("FK_Users_Role_Id")
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

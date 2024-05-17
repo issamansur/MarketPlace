@@ -1,6 +1,6 @@
 namespace MarketPlace.Application.UserAdvertisements.Command;
 
-public class UpdateUserAdvertisementCommand: IRequest<Guid>
+public class UpdateUserAdvertisementCommand: IRequest
 {
     public Guid Id { get; }
     public Guid ChangerId { get; }

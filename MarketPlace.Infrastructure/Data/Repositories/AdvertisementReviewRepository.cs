@@ -19,6 +19,9 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
                 await Context.SaveChangesAsync(cancellationToken);
                 
                 var advertisementId = entity.AdvertisementId;
+                // TODO: Refactor this part
+                // TODO: Read about SQL-command and possibility of remove transaction
+                /*
                 var rating = entity.Rating;
                 var sql = $"UPDATE User_Advertisements " +
                           $"SET Sum_Rating = Sum_Rating + {rating}, " +
@@ -27,6 +30,25 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
                           $"WHERE Id = '{advertisementId}'";
                 
                 await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+                */
+                await Context.UserAdvertisements
+                    .Where(x => x.Id == advertisementId)
+                    .ExecuteUpdateAsync(
+                        setters => setters
+                            .SetProperty(
+                                x => x.RatingCount,
+                                x => x.RatingCount + 1
+                            )
+                            .SetProperty(
+                                x => x.RatingSum,
+                                x => x.RatingSum + entity.Rating
+                            )
+                            .SetProperty(
+                                x => x.Rating,
+                                x => (double)(x.RatingSum + entity.Rating) / (x.RatingCount + 1)
+                            ),
+                        cancellationToken
+                    );
 
                 await transaction.CommitAsync(cancellationToken);
 
@@ -46,21 +68,36 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
         {
             try
             {
-                var advertisementReview = Context.AdvertisementReviews.Local.First(x => x.Id == entity.Id);
+                var advertisementReview = await Context.AdvertisementReviews.FirstAsync(x => x.Id == entity.Id, cancellationToken);
                 var oldRating = advertisementReview.Rating;
                 
-                Context.AdvertisementReviews.Update(entity);
                 await Context.SaveChangesAsync(cancellationToken);
 
                 var advertisementId = entity.AdvertisementId;
                 var newRating = entity.Rating;
                 var diff = newRating - oldRating;
-                var sql = $"UPDATE User_Advertisements " +
+                /*
+                var sql = $"UPDATE public.User_Advertisements " +
                           $"SET Sum_Rating = Sum_Rating + {diff}, " +
                           $"Rating = (Sum_Rating + {diff}) / Count_Rating " +
                           $"WHERE Id = '{advertisementId}'";
                 
                 await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+                */
+                await Context.UserAdvertisements
+                    .Where(x => x.Id == advertisementId)
+                    .ExecuteUpdateAsync(
+                        setters => setters
+                            .SetProperty(
+                                x => x.RatingSum,
+                                x => x.RatingSum + diff
+                            )
+                            .SetProperty(
+                                x => x.Rating,
+                                x => (double)(x.RatingSum + diff) / x.RatingCount
+                            ),
+                        cancellationToken
+                    );
 
                 await transaction.CommitAsync(cancellationToken);
             }
@@ -108,13 +145,34 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
 
                 var advertisementId = entity.AdvertisementId;
                 var rating = entity.Rating;
-                var sql = $"UPDATE User_Advertisements " +
+                
+                /*
+                var sql = $"UPDATE public.User_Advertisements " +
                           $"SET Rating_Sum = Rating_Sum - {rating}, " +
                           $"Rating_Count = Rating_Count - 1, " +
                           $"Rating = CASE WHEN Rating_Count = 1 THEN 0 ELSE (Rating_Sum - {rating} / (Rating_Count - 1) END " +
                           $"WHERE Id = '{advertisementId}'";
                 
                 await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+                */
+                await Context.UserAdvertisements
+                    .Where(x => x.Id == advertisementId)
+                    .ExecuteUpdateAsync(
+                        setters => setters
+                            .SetProperty(
+                                x => x.RatingSum,
+                                x => x.RatingSum - rating
+                            )
+                            .SetProperty(
+                                x => x.RatingCount,
+                                x => x.RatingCount - 1
+                            )
+                            .SetProperty(
+                                x => x.Rating,
+                                x => x.RatingCount == 1 ? 0 : (double)(x.RatingSum - rating) / (x.RatingCount - 1)
+                            ),
+                        cancellationToken
+                    );
 
                 await transaction.CommitAsync(cancellationToken);
             }

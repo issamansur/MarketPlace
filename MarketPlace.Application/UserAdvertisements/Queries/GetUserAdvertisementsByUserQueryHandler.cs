@@ -13,6 +13,8 @@ public class GetUserAdvertisementsByUserQueryHandler: BaseHandler,
         
         var tenant = GetTenant();
         
+        // TODO: need or not? This return InvalidOperationException if user not found
+        // but simple user cannot use this endpoint
         await tenant.Users.GetByIdAsync(request.Filter.UserId, cancellationToken);
         
         var advertisements = await tenant.UserAdvertisements.GetUserAdvertisementsByUserIdAsync(request.Filter, cancellationToken);

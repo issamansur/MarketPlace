@@ -13,7 +13,7 @@ public class CreateUserAdvertisementCommand: IRequest<Guid>
         string title,
         string description,
         Stream? image,
-        string extension
+        string? extension
         )
     {
         CreatorId = creatorId;

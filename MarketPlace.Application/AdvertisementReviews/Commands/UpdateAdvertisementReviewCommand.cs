@@ -1,6 +1,6 @@
 namespace MarketPlace.Application.AdvertisementReviews.Commands;
 
-public class UpdateAdvertisementReviewCommand: IRequest<Guid>
+public class UpdateAdvertisementReviewCommand: IRequest
 {
     public Guid Id { get; }
     public Guid ChangerId { get; }

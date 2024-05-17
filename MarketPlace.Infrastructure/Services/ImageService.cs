@@ -22,6 +22,11 @@ public class ImageService: IImageService
         {
             throw new ArgumentException("Invalid file extension");
         }
+        
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
 
         var filePath = Path.Combine(directory, fileName);
         await using var fileStream = new FileStream(filePath, FileMode.Create);
@@ -49,10 +54,17 @@ public class ImageService: IImageService
             throw new ArgumentException("Invalid file extension");
         }
         
-        string tempFileName = "temp_" + fileName;
-        
-        await UploadImageAsync(image, directory, tempFileName);
-        await DeleteImageAsync(Path.Combine(directory, fileName));
-        File.Move(Path.Combine(directory,tempFileName), Path.Combine(directory, fileName));
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+            await UploadImageAsync(image, directory, fileName);
+        }
+        else
+        {
+            string tempFileName = "temp_" + fileName;
+            await UploadImageAsync(image, directory, tempFileName);
+            await DeleteImageAsync(Path.Combine(directory, fileName));
+            File.Move(Path.Combine(directory,tempFileName), Path.Combine(directory, fileName));
+        }
     }
 }

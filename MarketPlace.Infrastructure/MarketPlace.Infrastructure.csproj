@@ -10,6 +10,7 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.3.24172.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.3.24172.4" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-preview.3" />
+      <PackageReference Include="Storage.Net" Version="9.3.0" />
     </ItemGroup>
 
     <ItemGroup>

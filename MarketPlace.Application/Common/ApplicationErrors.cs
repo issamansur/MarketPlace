@@ -14,4 +14,6 @@ public static class ApplicationErrors
     public static readonly string InvalidPageError = "Page must be greater than 0.";
     public static readonly string InvalidPageSizeError = "PageSize must be greater than 0.";
     public static readonly string InvalidSortTypeError = "SortType is not valid.";
+    
+    public static readonly string UserAdvertisementsCountLimitException = "User advertisements count limit reached.";
 }

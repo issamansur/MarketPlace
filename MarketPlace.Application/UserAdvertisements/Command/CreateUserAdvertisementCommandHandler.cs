@@ -1,16 +1,23 @@
 using MarketPlace.Application.Services;
+using MarketPlace.Application.UserAdvertisements.Filters;
+using Microsoft.Extensions.Options;
 
 namespace MarketPlace.Application.UserAdvertisements.Command;
 
 public class CreateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<CreateUserAdvertisementCommand, Guid>
 {
     private readonly IImageService _imageService;
+    private readonly ProjectSettings _projectSettings;
     
-    public CreateUserAdvertisementCommandHandler(ITenantFactory tenantFactory, IImageService imageService) : 
+    public CreateUserAdvertisementCommandHandler(
+        ITenantFactory tenantFactory,
+        IOptions<ProjectSettings> projectSettings,
+        IImageService imageService) : 
         base(tenantFactory)
     {
         ArgumentNullException.ThrowIfNull(imageService, nameof(imageService));
         _imageService = imageService;
+        _projectSettings = projectSettings.Value;
     }
     
     public async Task<Guid> Handle(CreateUserAdvertisementCommand request, CancellationToken cancellationToken)
@@ -18,6 +25,16 @@ public class CreateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         ArgumentNullException.ThrowIfNull(request, nameof(request));
         
         var tenant = GetTenant();
+        
+        // TODO: Create a request in repository to get count of user advertisements by user id
+        var userAdvertisements = 
+            await tenant.UserAdvertisements.GetUserAdvertisementsByUserIdAsync(
+                new UserAdvertisementsByUserFilter(request.CreatorId), cancellationToken);
+
+        if (userAdvertisements.ToList().Count >= _projectSettings.MaxUserAdvertisementsCount)
+        {
+            throw new InvalidOperationException(ApplicationErrors.UserAdvertisementsCountLimitException);
+        }
         
         var userAdvertisement = UserAdvertisement.Create(
             request.CreatorId,

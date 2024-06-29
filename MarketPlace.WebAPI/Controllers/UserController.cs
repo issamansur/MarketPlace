@@ -1,6 +1,6 @@
 using Mapster;
-using MarketPlace.Application.Users.Commands;
-using MarketPlace.Application.Users.Queries;
+using MarketPlace.Application.CQRS.Users.Commands;
+using MarketPlace.Application.CQRS.Users.Queries;
 using MarketPlace.Contracts.DTOs.Users;
 using MediatR;
 

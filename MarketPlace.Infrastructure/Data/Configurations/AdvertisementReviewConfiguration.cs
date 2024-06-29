@@ -33,9 +33,6 @@ public class AdvertisementReviewConfiguration: IEntityTypeConfiguration<Advertis
             .HasColumnName("Comment")
             .HasComment("Комментарий")
             .HasMaxLength(Constraints.REVIEW_MAX_COMMENT_LENGTH);
-        // .IsRequired();
-        // We can't make this, because we want to allow empty comments
-        // In some BD empty string is the same as NULL
         
         builder.Property(x => x.DateCreated)
             .HasColumnName("Date_Created")

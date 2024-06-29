@@ -17,7 +17,6 @@ public class UserRepository: BaseRepository, IUserRepository
         return await Context.Users.AsNoTracking().FirstAsync(x => x.Id == id, cancellationToken);
     }
 
-    // Other methods are not implemented (not needed for the test)
     public async Task UpdateAsync(User entity, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

@@ -1,5 +1,5 @@
-using MarketPlace.Application.UserAdvertisements.Command;
-using MarketPlace.Application.UserAdvertisements.Queries;
+using MarketPlace.Application.CQRS.UserAdvertisements.Command;
+using MarketPlace.Application.CQRS.UserAdvertisements.Queries;
 using MarketPlace.Contracts.DTOs.UserAdvertisements;
 
 namespace MarketPlace.WebAPI.Controllers;

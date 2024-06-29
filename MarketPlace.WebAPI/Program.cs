@@ -13,11 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
     // Add services from other layers to the container
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure();
-    builder.Services.AddContracts();
-    
-    // TODO: How to configure options in layer by DI
-    builder.Services.Configure<ProjectSettings>(
-        builder.Configuration.GetSection("ProjectSettings"));
 }
 
 // Configure connection to the database

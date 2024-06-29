@@ -156,13 +156,4 @@ public class UserAdvertisement
     {
         IsActive = false;
     }
-    
-    // Use SQL query to add new review and update rating instead of this method
-    /*
-    public void AddRating(int rating)
-    {
-        RatingSum += rating;
-        RatingCount++;
-    }
-    */
 }

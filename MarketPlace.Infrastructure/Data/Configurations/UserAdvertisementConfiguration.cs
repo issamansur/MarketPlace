@@ -18,7 +18,6 @@ public class UserAdvertisementConfiguration: IEntityTypeConfiguration<UserAdvert
             .HasColumnName("Creator_Id")
             .IsRequired();
         
-        // TODO: CHECK ON CORRECTNESS
         builder.Property(x => x.Number)
             .HasColumnName("Number")
             .HasComment("Номер объявления")
@@ -53,7 +52,6 @@ public class UserAdvertisementConfiguration: IEntityTypeConfiguration<UserAdvert
             .HasComment("Сумма оценок")
             .IsRequired();
         
-        // TODO: CHECK ON CORRECTNESS
         builder.Property(x => x.Rating)
             .HasColumnName("Rating")
             .HasComment("Рейтинг объявления")

@@ -1,5 +1,5 @@
-using MarketPlace.Application.AdvertisementReviews.Commands;
-using MarketPlace.Application.AdvertisementReviews.Queries;
+using MarketPlace.Application.CQRS.AdvertisementReviews.Commands;
+using MarketPlace.Application.CQRS.AdvertisementReviews.Queries;
 using MarketPlace.Contracts.DTOs.AdvertisementReviews;
 
 namespace MarketPlace.WebAPI.Controllers;

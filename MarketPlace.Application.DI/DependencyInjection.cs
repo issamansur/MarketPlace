@@ -1,6 +1,5 @@
+using MarketPlace.Application.Common;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace MarketPlace.Application.DI;
 
@@ -8,13 +7,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        /*
-        services.Configure<BulletinsConfigurationOptions>(
-            services.Configuration.GetSection("BulletinsConfigurationOptions"));
-        */
+        // Add Options<ProjectSettings>
+        services.AddOptions<ProjectSettings>()
+            .BindConfiguration(nameof(ProjectSettings));
         
+        // Add MediatR
         services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(typeof(Common.ITenantFactory).Assembly)
+            cfg.RegisterServicesFromAssembly(typeof(ITenantFactory).Assembly)
         );
             
         return services;

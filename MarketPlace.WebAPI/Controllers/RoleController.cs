@@ -1,5 +1,5 @@
-using MarketPlace.Application.Roles.Commands;
-using MarketPlace.Application.Roles.Queries;
+using MarketPlace.Application.CQRS.Roles.Commands;
+using MarketPlace.Application.CQRS.Roles.Queries;
 using MarketPlace.Contracts.DTOs.Roles;
 
 namespace MarketPlace.WebAPI.Controllers;

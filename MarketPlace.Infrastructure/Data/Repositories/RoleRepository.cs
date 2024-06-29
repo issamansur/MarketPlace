@@ -7,10 +7,10 @@ public class RoleRepository: BaseRepository, IRoleRepository
         
     }
 
-    public async Task<Guid> CreateAsync(Role entity, CancellationToken cancellationToken)
+    public Task<Guid> CreateAsync(Role entity, CancellationToken cancellationToken)
     {
         Context.Roles.Add(entity);
-        return entity.Id;
+        return Task.FromResult(entity.Id);
     }
 
     public async Task<Role> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -23,7 +23,6 @@ public class RoleRepository: BaseRepository, IRoleRepository
         return await Context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Title == title, cancellationToken);
     }
 
-    // Other methods are not implemented (not needed for the test)
     public async Task UpdateAsync(Role entity, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

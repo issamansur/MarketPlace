@@ -1,4 +1,4 @@
-using MarketPlace.Application.AdvertisementReviews.Filters;
+using MarketPlace.Application.CQRS.AdvertisementReviews.Filters;
 using MarketPlace.Application.Enums;
 
 namespace MarketPlace.Infrastructure.Data.Repositories;
@@ -19,18 +19,7 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
                 await Context.SaveChangesAsync(cancellationToken);
                 
                 var advertisementId = entity.AdvertisementId;
-                // TODO: Refactor this part
-                // TODO: Read about SQL-command and possibility of remove transaction
-                /*
-                var rating = entity.Rating;
-                var sql = $"UPDATE User_Advertisements " +
-                          $"SET Sum_Rating = Sum_Rating + {rating}, " +
-                          $"Count_Rating = Count_Rating + 1, " +
-                          $"Rating = (Sum_Rating + {rating}) / (Count_Rating + 1) " +
-                          $"WHERE Id = '{advertisementId}'";
                 
-                await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
-                */
                 await Context.UserAdvertisements
                     .Where(x => x.Id == advertisementId)
                     .ExecuteUpdateAsync(
@@ -76,14 +65,7 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
                 var advertisementId = entity.AdvertisementId;
                 var newRating = entity.Rating;
                 var diff = newRating - oldRating;
-                /*
-                var sql = $"UPDATE public.User_Advertisements " +
-                          $"SET Sum_Rating = Sum_Rating + {diff}, " +
-                          $"Rating = (Sum_Rating + {diff}) / Count_Rating " +
-                          $"WHERE Id = '{advertisementId}'";
                 
-                await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
-                */
                 await Context.UserAdvertisements
                     .Where(x => x.Id == advertisementId)
                     .ExecuteUpdateAsync(
@@ -133,7 +115,6 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
         return await res.ToListAsync(cancellationToken);
     }
 
-    // For future implementation
     public async Task DeleteAsync(AdvertisementReview entity, CancellationToken cancellationToken)
     {
         using (var transaction = await Context.Database.BeginTransactionAsync(cancellationToken))
@@ -146,15 +127,6 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
                 var advertisementId = entity.AdvertisementId;
                 var rating = entity.Rating;
                 
-                /*
-                var sql = $"UPDATE public.User_Advertisements " +
-                          $"SET Rating_Sum = Rating_Sum - {rating}, " +
-                          $"Rating_Count = Rating_Count - 1, " +
-                          $"Rating = CASE WHEN Rating_Count = 1 THEN 0 ELSE (Rating_Sum - {rating} / (Rating_Count - 1) END " +
-                          $"WHERE Id = '{advertisementId}'";
-                
-                await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
-                */
                 await Context.UserAdvertisements
                     .Where(x => x.Id == advertisementId)
                     .ExecuteUpdateAsync(

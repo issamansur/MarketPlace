@@ -14,7 +14,7 @@ public class AdvertisementReviewsFilterValidator: AbstractValidator<Advertisemen
         RuleFor(x => x.PageSize)
             .GreaterThan(0).WithMessage(ApplicationErrors.InvalidPageSizeError);
         
-        RuleFor(x => x.SortType)
+        RuleFor(x => x.AdvertisementReviewSortType)
             .IsInEnum().WithMessage(ApplicationErrors.InvalidSortTypeError);
     }
 }

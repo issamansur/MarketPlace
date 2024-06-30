@@ -38,7 +38,7 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
     {
         var res = Context.UserAdvertisements.AsNoTracking();
         
-        if (filter.SortType == SortTypes.ByRating)
+        if (filter.UserAdvertisementSortType == UserAdvertisementSortTypes.ByRating)
         {
             res = filter.IsDesc? res.OrderByDescending(x => x.Rating) : res.OrderBy(x => x.Rating);
         }
@@ -57,7 +57,7 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
         var res = Context.UserAdvertisements.AsNoTracking()
             .Where(x => x.CreatorId == filter.UserId);
         
-        if (filter.SortType == SortTypes.ByRating)
+        if (filter.UserAdvertisementSortType == UserAdvertisementSortTypes.ByRating)
         {
             res = filter.IsDesc? res.OrderByDescending(x => x.Rating) : res.OrderBy(x => x.Rating);
         }

@@ -38,7 +38,7 @@ public class AdvertisementReviewMappingProfile: IRegister
                     src.AdvertisementId, 
                     src.Page, 
                     src.PageSize, 
-                    src.SortType,
+                    src.AdvertisementReviewSortType,
                     src.IsDesc
                     ));
         

@@ -5,6 +5,6 @@ namespace MarketPlace.Contracts.DTOs.UserAdvertisements;
 public record SearchUserAdvertisementsRequest(
     int Page = 1, 
     int PageSize = 10, 
-    SortTypes SortType = SortTypes.None,
+    UserAdvertisementSortTypes UserAdvertisementSortType = UserAdvertisementSortTypes.None,
     bool IsDesc = false
     );

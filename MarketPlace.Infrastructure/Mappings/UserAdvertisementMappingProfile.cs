@@ -66,7 +66,7 @@ public class UserAdvertisementMappingProfile: IRegister
                     src.UserId,
                     src.Page,
                     src.PageSize,
-                    src.SortType,
+                    src.UserAdvertisementSortType,
                     src.IsDesc
                 ));
         
@@ -79,7 +79,7 @@ public class UserAdvertisementMappingProfile: IRegister
                 src => new UserAdvertisementsFilter(
                     src.Page,
                     src.PageSize,
-                    src.SortType,
+                    src.UserAdvertisementSortType,
                     src.IsDesc
                 ));
         

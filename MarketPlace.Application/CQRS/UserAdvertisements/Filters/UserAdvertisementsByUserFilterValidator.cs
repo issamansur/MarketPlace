@@ -13,7 +13,7 @@ public class UserAdvertisementsByUserFilterValidator: AbstractValidator<UserAdve
         RuleFor(x => x.PageSize)
             .GreaterThan(0).WithMessage(ApplicationErrors.InvalidPageSizeError);
         
-        RuleFor(x => x.SortType)
+        RuleFor(x => x.UserAdvertisementSortType)
             .IsInEnum().WithMessage(ApplicationErrors.InvalidSortTypeError);
     }
 }

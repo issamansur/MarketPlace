@@ -6,19 +6,19 @@ public class UserAdvertisementsFilter
 {
     public int Page { get; }
     public int PageSize { get; }
-    public SortTypes SortType { get; }
+    public UserAdvertisementSortTypes UserAdvertisementSortType { get; }
     public bool IsDesc { get; }
     
     public UserAdvertisementsFilter(
         int page = 1, 
         int pageSize = 10, 
-        SortTypes sortType = SortTypes.None,
+        UserAdvertisementSortTypes userAdvertisementSortType = UserAdvertisementSortTypes.None,
         bool isDesc = false
     )
     {
         Page = page;
         PageSize = pageSize;
-        SortType = sortType;
+        UserAdvertisementSortType = userAdvertisementSortType;
         IsDesc = isDesc;
         
         var validator = new UserAdvertisementsFilterValidator();

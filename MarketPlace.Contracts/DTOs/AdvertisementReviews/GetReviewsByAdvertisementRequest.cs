@@ -6,6 +6,6 @@ public record GetReviewsByAdvertisementRequest(
     Guid AdvertisementId, 
     int Page = 1, 
     int PageSize = 10, 
-    SortTypes SortType = SortTypes.None,
+    AdvertisementReviewSortTypes AdvertisementReviewSortType = AdvertisementReviewSortTypes.None,
     bool IsDesc = false
     );

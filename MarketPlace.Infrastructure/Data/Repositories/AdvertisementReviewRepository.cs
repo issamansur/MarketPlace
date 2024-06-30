@@ -103,7 +103,7 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
         var res = Context.AdvertisementReviews.AsNoTracking()
                 .Where(x => x.AdvertisementId == filter.AdvertisementId);
         
-        if (filter.SortType == SortTypes.ByRating)
+        if (filter.AdvertisementReviewSortType == AdvertisementReviewSortTypes.ByRating)
         {
             res = filter.IsDesc? res.OrderByDescending(x => x.Rating) : res.OrderBy(x => x.Rating);
         }

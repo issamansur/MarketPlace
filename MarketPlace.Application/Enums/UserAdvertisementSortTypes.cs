@@ -1,6 +1,6 @@
 namespace MarketPlace.Application.Enums;
 
-public enum SortTypes
+public enum UserAdvertisementSortTypes
 {
     None = 0,
     ByDate = 1,

@@ -4,8 +4,8 @@ namespace MarketPlace.Application.Repositories;
 
 public interface IUserAdvertisementRepository: ICrudRepository<UserAdvertisement>
 {
-    Task<IEnumerable<UserAdvertisement>> GetAllUserAdvertisementsAsync(UserAdvertisementsFilter filter, CancellationToken cancellationToken);
-    Task<IEnumerable<UserAdvertisement>> GetUserAdvertisementsByUserIdAsync(UserAdvertisementsByUserFilter filter, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<UserAdvertisement>> GetAllUserAdvertisementsAsync(UserAdvertisementsFilter filter, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<UserAdvertisement>> GetUserAdvertisementsByUserIdAsync(UserAdvertisementsByUserFilter filter, CancellationToken cancellationToken);
     
     Task DeleteAsync(UserAdvertisement entity, CancellationToken cancellationToken);
 }

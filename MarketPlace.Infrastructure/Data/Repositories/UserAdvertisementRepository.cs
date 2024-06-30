@@ -34,7 +34,7 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<UserAdvertisement>> GetAllUserAdvertisementsAsync(UserAdvertisementsFilter filter, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<UserAdvertisement>> GetAllUserAdvertisementsAsync(UserAdvertisementsFilter filter, CancellationToken cancellationToken)
     {
         var res = Context.UserAdvertisements.AsNoTracking();
         
@@ -52,7 +52,7 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
         return await res.ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<UserAdvertisement>> GetUserAdvertisementsByUserIdAsync(UserAdvertisementsByUserFilter filter, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<UserAdvertisement>> GetUserAdvertisementsByUserIdAsync(UserAdvertisementsByUserFilter filter, CancellationToken cancellationToken)
     {
         var res = Context.UserAdvertisements.AsNoTracking()
             .Where(x => x.CreatorId == filter.UserId);

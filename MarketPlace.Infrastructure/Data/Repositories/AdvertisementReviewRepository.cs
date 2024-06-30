@@ -98,7 +98,7 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
     
-    public async Task<IEnumerable<AdvertisementReview>> GetByAdvertisementIdAsync(AdvertisementReviewsFilter filter, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<AdvertisementReview>> GetByAdvertisementIdAsync(AdvertisementReviewsFilter filter, CancellationToken cancellationToken)
     {
         var res = Context.AdvertisementReviews.AsNoTracking()
                 .Where(x => x.AdvertisementId == filter.AdvertisementId);

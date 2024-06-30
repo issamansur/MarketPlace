@@ -15,21 +15,21 @@ public class RoleRepository: BaseRepository, IRoleRepository
 
     public async Task<Role> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await Context.Roles.AsNoTracking().FirstAsync(x => x.Id == id, cancellationToken);
+        return await Context.Roles
+            .AsNoTracking()
+            .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<Role?> TryGetByTitleAsync(string title, CancellationToken cancellationToken)
     {
-        return await Context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Title == title, cancellationToken);
+        return await Context.Roles
+            .AsNoTracking().
+            FirstOrDefaultAsync(x => x.Title == title, cancellationToken);
     }
 
-    public async Task UpdateAsync(Role entity, CancellationToken cancellationToken)
+    public Task UpdateAsync(Role entity, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task DeleteAsync(Role entity, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        Context.Roles.Update(entity);
+        return Task.CompletedTask;
     }
 }

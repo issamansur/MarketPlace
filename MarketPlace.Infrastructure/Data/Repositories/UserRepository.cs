@@ -6,24 +6,22 @@ public class UserRepository: BaseRepository, IUserRepository
     {
     }
 
-    public async Task<Guid> CreateAsync(User entity, CancellationToken cancellationToken)
+    public Task<Guid> CreateAsync(User entity, CancellationToken cancellationToken)
     {
         Context.Users.Add(entity);
-        return entity.Id;
+        return Task.FromResult(entity.Id);
     }
 
     public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await Context.Users.AsNoTracking().FirstAsync(x => x.Id == id, cancellationToken);
+        return await Context.Users
+            .AsNoTracking()
+            .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task UpdateAsync(User entity, CancellationToken cancellationToken)
+    public Task UpdateAsync(User entity, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task DeleteAsync(User entity, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        Context.Users.Update(entity);
+        return Task.CompletedTask;
     }
 }

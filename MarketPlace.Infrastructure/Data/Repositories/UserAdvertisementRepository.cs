@@ -7,30 +7,31 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
 {
     public UserAdvertisementRepository(MarketPlaceDbContext context) : base(context)
     {
-        // TODO: Add Service for Image
     }
 
-    public async Task<Guid> CreateAsync(UserAdvertisement entity, CancellationToken cancellationToken)
+    public Task<Guid> CreateAsync(UserAdvertisement entity, CancellationToken cancellationToken)
     {
-        // TODO: Add check on max count of advertisements
-        
         Context.UserAdvertisements.Add(entity);
-        return entity.Id;
+        return Task.FromResult(entity.Id);
     }
 
-    public async Task UpdateAsync(UserAdvertisement entity, CancellationToken cancellationToken)
+    public Task UpdateAsync(UserAdvertisement entity, CancellationToken cancellationToken)
     {
         Context.UserAdvertisements.Update(entity);
+        return Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(UserAdvertisement entity, CancellationToken cancellationToken)
+    public Task DeleteAsync(UserAdvertisement entity, CancellationToken cancellationToken)
     {
         Context.UserAdvertisements.Remove(entity);
+        return Task.CompletedTask;
     }
 
     public async Task<UserAdvertisement> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await Context.UserAdvertisements.AsNoTracking().FirstAsync(x => x.Id == id, cancellationToken);
+        return await Context.UserAdvertisements
+            .AsNoTracking()
+            .FirstAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<UserAdvertisement>> GetAllUserAdvertisementsAsync(UserAdvertisementsFilter filter, CancellationToken cancellationToken)

@@ -93,7 +93,9 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
 
     public async Task<AdvertisementReview> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await Context.AdvertisementReviews.AsNoTracking().FirstAsync(x => x.Id == id, cancellationToken);
+        return await Context.AdvertisementReviews
+            .AsNoTracking()
+            .FirstAsync(x => x.Id == id, cancellationToken);
     }
     
     public async Task<IEnumerable<AdvertisementReview>> GetByAdvertisementIdAsync(AdvertisementReviewsFilter filter, CancellationToken cancellationToken)

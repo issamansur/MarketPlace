@@ -12,7 +12,7 @@ public class AdvertisementReview
     public DateTimeOffset DateCreated { get; private init; }
     public DateTimeOffset DateUpdated { get; private set; }
 
-    public AdvertisementReview(
+    private AdvertisementReview(
         Guid id,
         Guid advertisementId,
         Guid creatorId,

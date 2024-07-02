@@ -6,7 +6,7 @@ public class Role
     public Guid Id { get; private init; }
     public string Title { get; private set; }
 
-    public Role(Guid id, string title)
+    private Role(Guid id, string title)
     {
         // Validation
         if (id == Guid.Empty)

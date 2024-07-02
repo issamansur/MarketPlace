@@ -21,7 +21,7 @@ public class UserAdvertisement
     
     public bool IsActive { get; private set; }
 
-    public UserAdvertisement(
+    private UserAdvertisement(
         Guid id,
         Guid creatorId,
         

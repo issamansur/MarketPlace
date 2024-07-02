@@ -6,7 +6,7 @@ public class User
     public Guid RoleId { get; private init; }
     public string Name { get; private set; }
     
-    public User(Guid id, Guid roleId, string name)
+    private User(Guid id, Guid roleId, string name)
     {
         // Validation
         if (id == Guid.Empty)

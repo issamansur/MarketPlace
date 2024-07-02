@@ -86,5 +86,25 @@ public class UserAdvertisementConfiguration: IEntityTypeConfiguration<UserAdvert
             .HasForeignKey(x => x.CreatorId)
             .HasConstraintName("FK_User_Advertisements_Creator_Id")
             .OnDelete(DeleteBehavior.Cascade);
+        
+        // Indexes
+        
+        // For searching user advertisements by creator
+        builder.HasIndex(x => x.CreatorId)
+            .HasDatabaseName("IX_User_Advertisements_Creator_Id");
+        
+        // For searching user advertisements by number
+        builder.HasIndex(x => x.Number)
+            .HasDatabaseName("IX_User_Advertisements_Number");
+        
+        // For searching user advertisements by title and description
+        builder.HasIndex(x => x.Title)
+            .HasDatabaseName("IX_User_Advertisements_Title");
+        builder.HasIndex(x => x.Description)
+            .HasDatabaseName("IX_User_Advertisements_Description");
+        
+        // For searching user advertisements by date
+        builder.HasIndex(x => x.DateUpdated)
+            .HasDatabaseName("IX_User_Advertisements_DateUpdated");
     }
 }

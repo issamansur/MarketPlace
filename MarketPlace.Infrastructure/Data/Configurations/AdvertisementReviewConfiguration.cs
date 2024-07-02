@@ -55,5 +55,19 @@ public class AdvertisementReviewConfiguration: IEntityTypeConfiguration<Advertis
             .HasForeignKey(x => x.CreatorId)
             .HasConstraintName("FK_Advertisement_Reviews_Creator_Id")
             .OnDelete(DeleteBehavior.Cascade);
+        
+        // Indexes
+        
+        // For searching reviews by advertisement
+        builder.HasIndex(x => x.AdvertisementId)
+            .HasDatabaseName("IX_Advertisement_Reviews_Advertisement_Id");
+        
+        // For searching reviews by creator (user)
+        builder.HasIndex(x => x.CreatorId)
+            .HasDatabaseName("IX_Advertisement_Reviews_Creator_Id");
+        
+        // For searching reviews by rating
+        builder.HasIndex(x => x.Rating)
+            .HasDatabaseName("IX_Advertisement_Reviews_Rating");
     }
 }

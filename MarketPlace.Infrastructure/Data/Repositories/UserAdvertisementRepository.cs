@@ -44,7 +44,7 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
         }
         else
         {
-            res = filter.IsDesc? res.OrderByDescending(x => x.DateCreated) : res.OrderBy(x => x.DateCreated);
+            res = filter.IsDesc? res.OrderByDescending(x => x.DateUpdated) : res.OrderBy(x => x.DateCreated);
         }
 
         res = res.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
@@ -63,7 +63,7 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
         }
         else
         {
-            res = filter.IsDesc? res.OrderByDescending(x => x.DateCreated) : res.OrderBy(x => x.DateCreated);
+            res = filter.IsDesc? res.OrderByDescending(x => x.DateUpdated) : res.OrderBy(x => x.DateCreated);
         }
 
         res = res.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);

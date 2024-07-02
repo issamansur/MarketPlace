@@ -13,41 +13,33 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
     {
         using (var transaction = await Context.Database.BeginTransactionAsync(cancellationToken))
         {
-            try
-            {
-                Context.AdvertisementReviews.Add(entity);
-                await Context.SaveChangesAsync(cancellationToken);
-                
-                var advertisementId = entity.AdvertisementId;
-                
-                await Context.UserAdvertisements
-                    .Where(x => x.Id == advertisementId)
-                    .ExecuteUpdateAsync(
-                        setters => setters
-                            .SetProperty(
-                                x => x.RatingCount,
-                                x => x.RatingCount + 1
-                            )
-                            .SetProperty(
-                                x => x.RatingSum,
-                                x => x.RatingSum + entity.Rating
-                            )
-                            .SetProperty(
-                                x => x.Rating,
-                                x => (double)(x.RatingSum + entity.Rating) / (x.RatingCount + 1)
-                            ),
-                        cancellationToken
-                    );
+            Context.AdvertisementReviews.Add(entity);
+            await Context.SaveChangesAsync(cancellationToken);
+            
+            var advertisementId = entity.AdvertisementId;
+            
+            await Context.UserAdvertisements
+                .Where(x => x.Id == advertisementId)
+                .ExecuteUpdateAsync(
+                    setters => setters
+                        .SetProperty(
+                            x => x.RatingCount,
+                            x => x.RatingCount + 1
+                        )
+                        .SetProperty(
+                            x => x.RatingSum,
+                            x => x.RatingSum + entity.Rating
+                        )
+                        .SetProperty(
+                            x => x.Rating,
+                            x => (double)(x.RatingSum + entity.Rating) / (x.RatingCount + 1)
+                        ),
+                    cancellationToken
+                );
 
-                await transaction.CommitAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
 
-                return entity.Id;
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
+            return entity.Id;
         }
     }
 
@@ -55,39 +47,31 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
     {
         using (var transaction = await Context.Database.BeginTransactionAsync(cancellationToken))
         {
-            try
-            {
-                var advertisementReview = await Context.AdvertisementReviews.FirstAsync(x => x.Id == entity.Id, cancellationToken);
-                var oldRating = advertisementReview.Rating;
-                
-                await Context.SaveChangesAsync(cancellationToken);
+            var advertisementReview = await Context.AdvertisementReviews.FirstAsync(x => x.Id == entity.Id, cancellationToken);
+            var oldRating = advertisementReview.Rating;
+            
+            await Context.SaveChangesAsync(cancellationToken);
 
-                var advertisementId = entity.AdvertisementId;
-                var newRating = entity.Rating;
-                var diff = newRating - oldRating;
-                
-                await Context.UserAdvertisements
-                    .Where(x => x.Id == advertisementId)
-                    .ExecuteUpdateAsync(
-                        setters => setters
-                            .SetProperty(
-                                x => x.RatingSum,
-                                x => x.RatingSum + diff
-                            )
-                            .SetProperty(
-                                x => x.Rating,
-                                x => (double)(x.RatingSum + diff) / x.RatingCount
-                            ),
-                        cancellationToken
-                    );
+            var advertisementId = entity.AdvertisementId;
+            var newRating = entity.Rating;
+            var diff = newRating - oldRating;
+            
+            await Context.UserAdvertisements
+                .Where(x => x.Id == advertisementId)
+                .ExecuteUpdateAsync(
+                    setters => setters
+                        .SetProperty(
+                            x => x.RatingSum,
+                            x => x.RatingSum + diff
+                        )
+                        .SetProperty(
+                            x => x.Rating,
+                            x => (double)(x.RatingSum + diff) / x.RatingCount
+                        ),
+                    cancellationToken
+                );
 
-                await transaction.CommitAsync(cancellationToken);
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
+            await transaction.CommitAsync(cancellationToken);
         }
     }
 
@@ -121,40 +105,32 @@ public class AdvertisementReviewRepository: BaseRepository, IAdvertisementReview
     {
         using (var transaction = await Context.Database.BeginTransactionAsync(cancellationToken))
         {
-            try
-            {
-                Context.AdvertisementReviews.Remove(entity);
-                await Context.SaveChangesAsync(cancellationToken);
+            Context.AdvertisementReviews.Remove(entity);
+            await Context.SaveChangesAsync(cancellationToken);
 
-                var advertisementId = entity.AdvertisementId;
-                var rating = entity.Rating;
-                
-                await Context.UserAdvertisements
-                    .Where(x => x.Id == advertisementId)
-                    .ExecuteUpdateAsync(
-                        setters => setters
-                            .SetProperty(
-                                x => x.RatingSum,
-                                x => x.RatingSum - rating
-                            )
-                            .SetProperty(
-                                x => x.RatingCount,
-                                x => x.RatingCount - 1
-                            )
-                            .SetProperty(
-                                x => x.Rating,
-                                x => x.RatingCount == 1 ? 0 : (double)(x.RatingSum - rating) / (x.RatingCount - 1)
-                            ),
-                        cancellationToken
-                    );
+            var advertisementId = entity.AdvertisementId;
+            var rating = entity.Rating;
+            
+            await Context.UserAdvertisements
+                .Where(x => x.Id == advertisementId)
+                .ExecuteUpdateAsync(
+                    setters => setters
+                        .SetProperty(
+                            x => x.RatingSum,
+                            x => x.RatingSum - rating
+                        )
+                        .SetProperty(
+                            x => x.RatingCount,
+                            x => x.RatingCount - 1
+                        )
+                        .SetProperty(
+                            x => x.Rating,
+                            x => x.RatingCount == 1 ? 0 : (double)(x.RatingSum - rating) / (x.RatingCount - 1)
+                        ),
+                    cancellationToken
+                );
 
-                await transaction.CommitAsync(cancellationToken);
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
+            await transaction.CommitAsync(cancellationToken);
         }
     }
 }

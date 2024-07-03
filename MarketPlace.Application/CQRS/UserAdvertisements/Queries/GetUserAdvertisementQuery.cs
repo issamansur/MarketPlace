@@ -6,8 +6,6 @@ public class GetUserAdvertisementQuery: IRequest<UserAdvertisement>
     
     public GetUserAdvertisementQuery(Guid userAdvertisementId)
     {
-        ArgumentNullException.ThrowIfNull(userAdvertisementId, nameof(userAdvertisementId));
-        
         UserAdvertisementId = userAdvertisementId;
 
         var validation = new GetUserAdvertisementQueryValidator();

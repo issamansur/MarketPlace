@@ -48,6 +48,9 @@ public class UserAdvertisementMappingProfile: IRegister
         config.NewConfig<GetUserAdvertisementRequest, GetUserAdvertisementQuery>()
             .Map(dest => dest.UserAdvertisementId, src => src.Id);
         
+        config.NewConfig<GetUserAdvertisementByNumberRequest, GetUserAdvertisementByNumberQuery>()
+            .Map(dest => dest.UserAdvertisementNumber, src => src.Number);
+        
         config.NewConfig<UserAdvertisement, GetUserAdvertisementResponse>()
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.CreatorId, src => src.CreatorId)

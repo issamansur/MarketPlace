@@ -32,6 +32,15 @@ public class UserAdvertisementController: ControllerBase
         return Ok(response);
     }
     
+    [HttpGet("{number:int}")]
+    public async Task<IActionResult> GetUserAdvertisementByNumber([FromRoute] int number)
+    {
+        var request = new GetUserAdvertisementByNumberRequest(number);
+        var result = await _mediator.Send(request.Adapt<GetUserAdvertisementByNumberQuery>());
+        var response = result.Adapt<GetUserAdvertisementResponse>();
+        return Ok(response);
+    }
+    
     // Maybe we should use [HttpPatch] instead of [HttpPut]
     // What about (non-route and body) or (route and body without id) parameters?
     [HttpPut("{id:guid}")]

@@ -33,6 +33,13 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
             .AsNoTracking()
             .FirstAsync(x => x.Id == id, cancellationToken);
     }
+    
+    public async Task<UserAdvertisement> GetByNumberAsync(int number, CancellationToken cancellationToken)
+    {
+        return await Context.UserAdvertisements
+            .AsNoTracking()
+            .FirstAsync(x => x.Number == number, cancellationToken);
+    }
 
     public async Task<IReadOnlyCollection<UserAdvertisement>> GetAllUserAdvertisementsAsync(UserAdvertisementsFilter filter, CancellationToken cancellationToken)
     {

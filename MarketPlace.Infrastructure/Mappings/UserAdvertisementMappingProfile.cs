@@ -77,6 +77,7 @@ public class UserAdvertisementMappingProfile: IRegister
         config.NewConfig<SearchUserAdvertisementsRequest, GetAllUserAdvertisementsQuery>()
             .Map(dest => dest.Filter,
                 src => new UserAdvertisementsFilter(
+                    src.Query,
                     src.Page,
                     src.PageSize,
                     src.UserAdvertisementSortType,

@@ -11,6 +11,7 @@ public static class ApplicationErrors
         return $"{valueExpression} with these unique parameters already exists.";
     }
     
+    public static readonly string InvalidQueryError = "Query must not be null.";
     public static readonly string InvalidPageError = "Page must be greater than 0.";
     public static readonly string InvalidPageSizeError = "PageSize must be greater than 0.";
     public static readonly string InvalidSortTypeError = "UserAdvertisementSortType is not valid.";

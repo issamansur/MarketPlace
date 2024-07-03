@@ -37,6 +37,28 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
     public async Task<IReadOnlyCollection<UserAdvertisement>> GetAllUserAdvertisementsAsync(UserAdvertisementsFilter filter, CancellationToken cancellationToken)
     {
         var res = Context.UserAdvertisements.AsNoTracking();
+
+        var query = filter.Query.Trim();
+        
+        if (!string.IsNullOrEmpty(filter.Query))
+        {
+            // Check if query is a number (possible advertisement number)
+            if (int.TryParse(query, out var id))
+            {
+                // If query is a number, try to find advertisement by number
+                var advertisement = res.FirstOrDefault(x => x.Number == id);
+                if (advertisement != null)
+                {
+                    return new List<UserAdvertisement> {advertisement};
+                }
+            }
+            
+            // If query is not a number, search by title or description
+            res = res.Where(x => 
+                EF.Functions.ILike(x.Title, $"%{query}%") || 
+                EF.Functions.ILike(x.Description, $"%{query}%")
+            );
+        }
         
         if (filter.UserAdvertisementSortType == UserAdvertisementSortTypes.ByRating)
         {

@@ -4,6 +4,9 @@ public class UserAdvertisementsFilterValidator: AbstractValidator<UserAdvertisem
 {
     public UserAdvertisementsFilterValidator()
     {
+        RuleFor(x => x.Query)
+            .NotNull().WithMessage(ApplicationErrors.InvalidQueryError);
+        
         RuleFor(x => x.Page)
             .GreaterThan(0).WithMessage(ApplicationErrors.InvalidPageError);
         

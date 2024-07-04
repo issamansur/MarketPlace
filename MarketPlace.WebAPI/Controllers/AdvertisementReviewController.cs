@@ -46,5 +46,11 @@ public class AdvertisementReviewController: ControllerBase
         return Ok();
     }
     
-    // TODO: Delete method
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteAdvertisementReview([FromRoute] Guid id)
+    {
+        var request = new DeleteReviewRequest(id);
+        await _mediator.Send(request.Adapt<DeleteAdvertisementReviewCommand>());
+        return Ok();
+    }
 }

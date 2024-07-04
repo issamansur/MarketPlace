@@ -23,6 +23,9 @@ public class AdvertisementReviewMappingProfile: IRegister
             .Map(dest => dest.Rating, src => src.Rating)
             .Map(dest => dest.Comment, src => src.Comment);
         
+        config.NewConfig<DeleteReviewRequest, DeleteAdvertisementReviewCommand>()
+            .Map(dest => dest.ReviewId, src => src.Id);
+        
         // Queries
         config.NewConfig<AdvertisementReview, GetReviewResponse>()
             .Map(dest => dest.Id, src => src.Id)

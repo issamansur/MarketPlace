@@ -1,4 +1,5 @@
 using MarketPlace.Application.Common;
+using MarketPlace.Application.Options;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MarketPlace.Application.DI;

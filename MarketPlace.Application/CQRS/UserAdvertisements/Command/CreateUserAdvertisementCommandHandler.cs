@@ -1,4 +1,5 @@
 using MarketPlace.Application.CQRS.UserAdvertisements.Filters;
+using MarketPlace.Application.Options;
 using MarketPlace.Application.Services;
 using Microsoft.Extensions.Options;
 

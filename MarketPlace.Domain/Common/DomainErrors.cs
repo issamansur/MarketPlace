@@ -12,10 +12,10 @@ public static class DomainErrors
         $"User name length must be between {Constraints.USER_MIN_NAME_LENGTH} and {Constraints.USER_MAX_NAME_LENGTH} characters.";
     
     public static readonly string UserAdTitleLengthError =
-        $"Review title length must be between {Constraints.USER_AD_MIN_TITLE_LENGTH} and {Constraints.USER_AD_MAX_DESC_LENGTH} characters.";
+        $"Review title length must be between {Constraints.USER_AD_MIN_TITLE_LENGTH} and {Constraints.USER_AD_MAX_TITLE_LENGTH} characters.";
     
     public static readonly string UserAdDescLengthError =
-        $"Review description length must be between {Constraints.USER_AD_MIN_DESC_LENGTH} and {Constraints.USER_AD_MAX_TITLE_LENGTH} characters.";
+        $"Review description length must be between {Constraints.USER_AD_MIN_DESC_LENGTH} and {Constraints.USER_AD_MAX_DESC_LENGTH} characters.";
 
     public static readonly string ReviewRatingError = 
         $"Review rate must be between {Constraints.REVIEW_MIN_RATING} and {Constraints.REVIEW_MAX_RATING}.";

@@ -72,6 +72,7 @@ public class UserAdvertisement
         Id = id;
         CreatorId = creatorId;
         
+        Number = number;
         Title = title;
         Description = description;
         ImageUrl = imageUrl;

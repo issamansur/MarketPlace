@@ -1,6 +1,6 @@
 using System.Reflection;
-using Mapster;
 using MapsterMapper;
+using MarketPlace.Infrastructure.Options;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MarketPlace.Infrastructure;
@@ -10,10 +10,21 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddTransient<ITenantFactory, TenantFactory>();
-        services.AddSingleton<IImageService, ImageService>();
+
+        services.AddImageService();
         
         services.AddContracts();
 
+        return services;
+    }
+    
+    private static IServiceCollection AddImageService(this IServiceCollection services)
+    {
+        services.AddOptions<ImageServiceOptions>()
+            .BindConfiguration(nameof(ImageServiceOptions));
+        
+        services.AddSingleton<IImageService, ImageService>();
+        
         return services;
     }
     

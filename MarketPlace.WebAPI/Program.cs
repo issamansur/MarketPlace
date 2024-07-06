@@ -60,9 +60,10 @@ app.UseStaticFiles(
     new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), "UserAdvertisements")
+            Path.Combine(
+                Directory.GetCurrentDirectory(), app.Configuration["StaticFilesPath"] ?? "StaticFiles")
             ),
-        RequestPath = "/UserAdvertisements"
+        RequestPath = "/" + (app.Configuration["StaticFilesPath"] ?? "StaticFiles")
     }
 );
 

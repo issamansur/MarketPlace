@@ -25,8 +25,7 @@ public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
             throw new UnauthorizedAccessException(ApplicationErrors.UnauthorizedAccessError);
         }
         
-        // At first, we need to delete the image from the storage... or not?
-        await _imageService.DeleteImageAsync(userAdvertisement.ImageUrl);
+        await _imageService.DeleteImageAsync(userAdvertisement.ImageUrl, cancellationToken);
         
         await tenant.UserAdvertisements.DeleteAsync(userAdvertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);

@@ -25,21 +25,21 @@ public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
             throw new UnauthorizedAccessException(ApplicationErrors.UnauthorizedAccessError);
         }
         
-        // TODO: Refactor this part
-        // TODO: Think about the case when the user wants to delete the image
-        string imageUrl = advertisement.ImageUrl;
+        string imageUrl;
         
         if (request.Image is not null)
         {
-            string directory = Path.Combine("UserAdvertisements", advertisement.CreatorId.ToString());
-            string fileWithExtension = $"{advertisement.Id}{request.Extension}";
-            
             imageUrl = Path.Combine(
-                directory,
-                fileWithExtension
+                Constants.UserAdvertisementsPath,
+                request.ChangerId.ToString(),
+                $"{advertisement.Id}{request.Extension}"
             );
             
-            await _imageService.UpdateImageAsync(request.Image, directory, fileWithExtension);
+            await _imageService.SaveImageAsync(request.Image, imageUrl, cancellationToken);
+        }
+        else
+        {
+            imageUrl = advertisement.ImageUrl;
         }
         
         advertisement.Update(
@@ -47,8 +47,6 @@ public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
             request.Description,
             imageUrl
         );
-            
-        // ---------------------
         
         await tenant.UserAdvertisements.UpdateAsync(advertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);

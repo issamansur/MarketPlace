@@ -1,4 +1,6 @@
 using MarketPlace.Application.Services;
+using MarketPlace.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 
 namespace MarketPlace.Infrastructure.Services;
 
@@ -7,64 +9,46 @@ namespace MarketPlace.Infrastructure.Services;
 // TODO: Look at the possibility of added a methods to get the resized image (Use the ImageMagick library) (or ImageSharp)
 public class ImageService: IImageService
 {
-    private const int MaxImageSize = 2 * 1024 * 1024;
+    private readonly ImageServiceOptions _options;
+    private int MaxImageSize => _options.MaxImageSizeMb * 1024 * 1024;
     private readonly string[] _allowedExtensions = [".jpg", ".jpeg", ".png"];
-    
-    public async Task UploadImageAsync(Stream image, string directory, string fileName)
+
+    public ImageService(IOptions<ImageServiceOptions> options)
     {
+        _options = options.Value;
+    }
+    
+    private string GetPath(string fileName) => Path.Combine(_options.ImagesDirectory, fileName);
+    
+    public async Task SaveImageAsync(Stream image, string imagePath, CancellationToken cancellationToken)
+    {
+        var fullPath = GetPath(imagePath);
+        
         if (image.Length > MaxImageSize)
         {
             throw new ArgumentException("Image is too large");
         }
 
-        var extension = Path.GetExtension(fileName);
+        var extension = Path.GetExtension(imagePath);
         if (!_allowedExtensions.Contains(extension))
         {
             throw new ArgumentException("Invalid file extension");
         }
-        
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
 
-        var filePath = Path.Combine(directory, fileName);
-        await using var fileStream = new FileStream(filePath, FileMode.Create);
-        await image.CopyToAsync(fileStream);
+        string directoryPath = Path.GetDirectoryName(fullPath)!;
+        Directory.CreateDirectory(directoryPath);
+        
+        await using var fileStream = new FileStream(fullPath, FileMode.Create);
+        await image.CopyToAsync(fileStream, cancellationToken);
     }
 
-    public async Task DeleteImageAsync(string imagePath)
+    public async Task DeleteImageAsync(string imagePath, CancellationToken cancellationToken)
     {
-        // TODO: Check on correctness
-        if (File.Exists(imagePath))
-        {
-            await Task.Run(() => File.Delete(imagePath));
-        }
-    }
-    
-    public async Task UpdateImageAsync(Stream image, string directory, string fileName)
-    {
-        if (image.Length > MaxImageSize)
-        {
-            throw new ArgumentException("Image is too large");
-        }
+        var fullPath = GetPath(imagePath);
         
-        if (!_allowedExtensions.Contains(Path.GetExtension(fileName)))
+        if (File.Exists(fullPath))
         {
-            throw new ArgumentException("Invalid file extension");
-        }
-        
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-            await UploadImageAsync(image, directory, fileName);
-        }
-        else
-        {
-            string tempFileName = "temp_" + fileName;
-            await UploadImageAsync(image, directory, tempFileName);
-            await DeleteImageAsync(Path.Combine(directory, fileName));
-            File.Move(Path.Combine(directory,tempFileName), Path.Combine(directory, fileName));
+            await Task.Run(() => File.Delete(fullPath), cancellationToken);
         }
     }
 }

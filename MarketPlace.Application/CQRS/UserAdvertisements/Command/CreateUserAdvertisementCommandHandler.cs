@@ -27,7 +27,6 @@ public class CreateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         
         var tenant = GetTenant();
         
-        // TODO: Create a request in repository to get count of user advertisements by user id
         var userAdvertisements = 
             await tenant.UserAdvertisements.GetUserAdvertisementsByUserIdAsync(
                 new UserAdvertisementsByUserFilter(request.CreatorId), cancellationToken);
@@ -42,31 +41,28 @@ public class CreateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
             request.Title,
             request.Description
         );
-
-        // TODO: Refactor this part
+        
         string imageUrl;
         
         if (request.Image is not null)
         {
-            string directory = Path.Combine("UserAdvertisements", request.CreatorId.ToString());
-            string fileWithExtension = $"{userAdvertisement.Id}{request.Extension}";
-            
             imageUrl = Path.Combine(
-                directory,
-                fileWithExtension
-                );
+                Constants.UserAdvertisementsPath,
+                request.CreatorId.ToString(),
+                $"{userAdvertisement.Id}{request.Extension}"
+            );
             
-            await _imageService.UploadImageAsync(request.Image, directory, fileWithExtension);
+            await _imageService.SaveImageAsync(request.Image, imageUrl, cancellationToken);
         }
         else
         {
-            // Is this the best way to set a default image?
-            imageUrl = Path.Combine("UserAdvertisements", "default.png");
+            imageUrl = Path.Combine(
+                Constants.UserAdvertisementsPath,
+                Constants.DefaultImage
+            );
         }
         
         userAdvertisement.SetImageUrl(imageUrl);
-            
-        // ---------------------
         
         await tenant.UserAdvertisements.CreateAsync(userAdvertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);

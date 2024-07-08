@@ -4,7 +4,8 @@ using MarketPlace.Application.Common;
 using MarketPlace.Application.DI;
 using MarketPlace.Infrastructure.Data;
 using MarketPlace.Contracts;
-
+using MarketPlace.Infrastructure.Options;
+using MarketPlace.WebAPI.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
@@ -39,6 +40,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseMiddleware<ImageResizingMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -55,15 +58,35 @@ else
 app.UseHttpsRedirection();
 
 // Before mapping, I think...
-// TODO: Refactor static folder in NON-PROJECT folder
+var staticFilesOptions = app.Configuration.GetSection(nameof(StaticFilesOptions)).Get<StaticFilesOptions>()!;
+
+var staticFilesRequestPath = staticFilesOptions.RequestPath;
+var staticFilesRealPath = staticFilesOptions.RealPath;
+var staticFilesRealPathFull = Path.Combine(
+    Directory.GetCurrentDirectory(), 
+    staticFilesRealPath.TrimStart('/')
+);
+
+if (!Directory.Exists(staticFilesRealPathFull))
+{
+    Directory.CreateDirectory(staticFilesRealPathFull);
+}
+
+var cacheExpireInMinutes = staticFilesOptions.CacheExpireInMinutes;
 app.UseStaticFiles(
     new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(
-            Path.Combine(
-                Directory.GetCurrentDirectory(), app.Configuration["StaticFilesPath"] ?? "StaticFiles")
-            ),
-        RequestPath = "/" + (app.Configuration["StaticFilesPath"] ?? "StaticFiles")
+            staticFilesRealPathFull
+        ),
+        RequestPath = staticFilesRequestPath,
+        OnPrepareResponse = ctx =>
+        {
+            ctx.Context.Response.Headers.Append("Cache-Control",
+                $"public, max-age={cacheExpireInMinutes * 60}");
+            ctx.Context.Response.Headers.Append("Expires",
+                DateTime.UtcNow.AddMinutes(cacheExpireInMinutes).ToString("R"));
+        }
     }
 );
 

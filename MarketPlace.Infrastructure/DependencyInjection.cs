@@ -20,6 +20,8 @@ public static class DependencyInjection
     
     private static IServiceCollection AddImageService(this IServiceCollection services)
     {
+        services.AddOptions<StaticFilesOptions>()
+            .BindConfiguration(nameof(StaticFilesOptions));
         services.AddOptions<ImageServiceOptions>()
             .BindConfiguration(nameof(ImageServiceOptions));
         

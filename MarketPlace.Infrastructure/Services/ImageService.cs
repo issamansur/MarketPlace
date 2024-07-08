@@ -1,24 +1,40 @@
+using System.Runtime.Serialization.Formatters;
 using MarketPlace.Application.Services;
 using MarketPlace.Infrastructure.Options;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace MarketPlace.Infrastructure.Services;
 
-// TODO: Refactor this class
-// TODO: Look at the possibility of using the IFileProvider interface
-// TODO: Look at the possibility of added a methods to get the resized image (Use the ImageMagick library) (or ImageSharp)
 public class ImageService: IImageService
 {
-    private readonly ImageServiceOptions _options;
-    private int MaxImageSize => _options.MaxImageSizeMb * 1024 * 1024;
-    private readonly string[] _allowedExtensions = [".jpg", ".jpeg", ".png"];
-
-    public ImageService(IOptions<ImageServiceOptions> options)
+    private readonly StaticFilesOptions _optionsStaticFiles;
+    private readonly ImageServiceOptions _optionsImageService;
+    
+    private int MaxImageSize => _optionsImageService.MaxSizeMb * 1024 * 1024;
+    public IReadOnlyCollection<string> AllowedExtensions => _optionsImageService.AllowedExtensions.AsReadOnly();
+    public int CacheExpireInMinutes => _optionsImageService.CacheExpireInMinutes;
+    
+    //public ImageServiceOptions Options => _optionsImageService.Clone() as ImageServiceOptions ?? new ImageServiceOptions();
+    
+    public ImageService(
+        IOptions<StaticFilesOptions> optionsStaticFiles,
+        IOptions<ImageServiceOptions> optionsImageService
+    )
     {
-        _options = options.Value;
+        _optionsStaticFiles = optionsStaticFiles.Value;
+        _optionsImageService = optionsImageService.Value;
     }
     
-    private string GetPath(string fileName) => Path.Combine(_options.ImagesDirectory, fileName);
+    private string GetPath(string imagePath) => 
+        Path.Combine(
+            Directory.GetCurrentDirectory(),
+            _optionsStaticFiles.RealPath.TrimStart('/'),
+            _optionsImageService.Directory.TrimStart('/'), 
+            imagePath
+        );
     
     public async Task SaveImageAsync(Stream image, string imagePath, CancellationToken cancellationToken)
     {
@@ -30,7 +46,7 @@ public class ImageService: IImageService
         }
 
         var extension = Path.GetExtension(imagePath);
-        if (!_allowedExtensions.Contains(extension))
+        if (!AllowedExtensions.Contains(extension))
         {
             throw new ArgumentException("Invalid file extension");
         }
@@ -50,5 +66,32 @@ public class ImageService: IImageService
         {
             await Task.Run(() => File.Delete(fullPath), cancellationToken);
         }
+    }
+    
+    public async Task<Stream> GetResizedImageAsync(string imagePath, int width, int height, CancellationToken cancellationToken)
+    {
+        // Get the full path of the image
+        var fullPath = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            imagePath
+        );
+        
+        if (!File.Exists(fullPath))
+        {
+            throw new ArgumentException("Image does not exist");
+        }
+        
+        using var image = await Image.LoadAsync(fullPath, cancellationToken);    
+        image.Mutate(x => x.Resize(new ResizeOptions
+        {
+            Size = new Size(width, height),
+            Mode = ResizeMode.Max
+        }));
+
+        var memoryStream = new MemoryStream();
+        await image.SaveAsJpegAsync(memoryStream, cancellationToken);
+        memoryStream.Position = 0;
+
+        return memoryStream;
     }
 }

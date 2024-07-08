@@ -1,7 +1,20 @@
 namespace MarketPlace.Infrastructure.Options;
 
-public class ImageServiceOptions
+public class ImageServiceOptions: ICloneable
 {
-    public int MaxImageSizeMb { get; init; }
-    public string ImagesDirectory { get; init; }
+    public string Directory { get; init; }
+    public List<string> AllowedExtensions { get; init; }
+    public int MaxSizeMb { get; init; }
+    public int CacheExpireInMinutes { get; init; }
+    
+    public object Clone()
+    {
+        return new ImageServiceOptions
+        {
+            Directory = Directory,
+            AllowedExtensions = AllowedExtensions,
+            MaxSizeMb = MaxSizeMb,
+            CacheExpireInMinutes = CacheExpireInMinutes
+        };
+    }
 }

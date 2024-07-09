@@ -18,6 +18,8 @@ public class UserController: ControllerBase
     }
     
     [HttpPost]
+    [ProducesResponseType<CreateUserResponse>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
         var result = await _mediator.Send(request.Adapt<CreateUserCommand>());
@@ -26,6 +28,8 @@ public class UserController: ControllerBase
     }
     
     [HttpGet("{id:guid}")]
+    [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetUser([FromRoute] Guid id)
     {
         var request = new GetUserRequest(id);

@@ -16,6 +16,8 @@ public class RoleController: ControllerBase
     }
     
     [HttpPost]
+    [ProducesResponseType<CreateRoleResponse>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateRole([FromBody] CreateRoleRequest request)
     {
         var result = await _mediator.Send(request.Adapt<CreateRoleCommand>());
@@ -24,6 +26,8 @@ public class RoleController: ControllerBase
     }
     
     [HttpGet("{id:guid}")]
+    [ProducesResponseType<GetRoleByIdResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetRole([FromRoute] Guid id)
     {
         var request = new GetRoleByIdRequest(id);

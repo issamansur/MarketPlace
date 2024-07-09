@@ -5,7 +5,7 @@ using MarketPlace.Contracts.DTOs.AdvertisementReviews;
 namespace MarketPlace.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/advertisement_reviews")]
+[Route("api/reviews")]
 public class AdvertisementReviewController: ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,6 +16,8 @@ public class AdvertisementReviewController: ControllerBase
     }
     
     [HttpPost]
+    [ProducesResponseType<CreateReviewResponse>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAdvertisementReview([FromBody] CreateReviewRequest request)
     {
         var result = await _mediator.Send(request.Adapt<CreateAdvertisementReviewCommand>());
@@ -24,6 +26,8 @@ public class AdvertisementReviewController: ControllerBase
     }
     
     [HttpGet]
+    [ProducesResponseType<GetReviewsByAdvertisementResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAdvertisementReviews([FromQuery] GetReviewsByAdvertisementRequest request)
     {
         var result = await _mediator.Send(request.Adapt<GetReviewsByAdvertisementQuery>());
@@ -32,6 +36,8 @@ public class AdvertisementReviewController: ControllerBase
     }
     
     [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateAdvertisementReview(
         [FromRoute] Guid id, 
         [FromBody] UpdateReviewRequest request
@@ -47,6 +53,8 @@ public class AdvertisementReviewController: ControllerBase
     }
     
     [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteAdvertisementReview([FromRoute] Guid id)
     {
         var request = new DeleteReviewRequest(id);

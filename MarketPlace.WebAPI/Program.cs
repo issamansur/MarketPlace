@@ -1,13 +1,11 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using MarketPlace.Application.Common;
-using MarketPlace.Application.DI;
-using MarketPlace.Infrastructure.Data;
-using MarketPlace.Contracts;
-using MarketPlace.Infrastructure.Options;
-using MarketPlace.WebAPI.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using MarketPlace.Application.DI;
+using MarketPlace.Infrastructure.Data;
+using MarketPlace.Infrastructure.Options;
+using MarketPlace.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -15,6 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure();
 }
+
+// Error Handling
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 // Configure connection to the database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -24,7 +26,6 @@ builder.Services.AddDbContext<MarketPlaceDbContext>(options =>
 });
 
 // Add services to the container.
-
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -34,6 +35,7 @@ builder.Services.AddControllers()
         // Enum as string, not as number
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -50,10 +52,11 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    // Add CORS policy for production
-    // TODO: configure for production
+    // TODO: configure for production (no host and port)
     app.UseCors();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

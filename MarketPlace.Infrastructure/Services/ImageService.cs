@@ -77,18 +77,26 @@ public class ImageService: IImageService
         {
             throw new ArgumentException("Image does not exist");
         }
+
+        var fullPathResized = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            Path.GetDirectoryName(imagePath) ?? "",
+            $"{Path.GetFileNameWithoutExtension(imagePath)}_{width}x{height}.jpeg"
+        );
         
-        using var image = await Image.LoadAsync(fullPath, cancellationToken);    
-        image.Mutate(x => x.Resize(new ResizeOptions
+        if (!File.Exists(fullPathResized))
         {
-            Size = new Size(width, height),
-            Mode = ResizeMode.Max
-        }));
+            using var image = await Image.LoadAsync(fullPath, cancellationToken);    
+            image.Mutate(x => x.Resize(new ResizeOptions
+            {
+                Size = new Size(width, height),
+                Mode = ResizeMode.Max
+            }));
+            
+            await using var resizedFileStream = new FileStream(fullPathResized, FileMode.Create);
+            await image.SaveAsJpegAsync(resizedFileStream, cancellationToken);
+        }
 
-        var memoryStream = new MemoryStream();
-        await image.SaveAsJpegAsync(memoryStream, cancellationToken);
-        memoryStream.Position = 0;
-
-        return memoryStream;
+        return new FileStream(fullPathResized, FileMode.Open, FileAccess.Read);
     }
 }

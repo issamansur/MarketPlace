@@ -53,7 +53,7 @@ public class UserAdvertisementRepository: BaseRepository, IUserAdvertisementRepo
             if (int.TryParse(query, out var id))
             {
                 // If query is a number, try to find advertisement by number
-                var advertisement = res.FirstOrDefault(x => x.Number == id);
+                var advertisement = await res.FirstOrDefaultAsync(x => x.Number == id, cancellationToken);
                 if (advertisement != null)
                 {
                     return new List<UserAdvertisement> {advertisement};

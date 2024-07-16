@@ -5,7 +5,6 @@ public class ImageServiceOptions: ICloneable
     public string Directory { get; init; }
     public List<string> AllowedExtensions { get; init; }
     public int MaxSizeMb { get; init; }
-    public int CacheExpireInMinutes { get; init; }
     
     public object Clone()
     {
@@ -14,7 +13,6 @@ public class ImageServiceOptions: ICloneable
             Directory = Directory,
             AllowedExtensions = AllowedExtensions,
             MaxSizeMb = MaxSizeMb,
-            CacheExpireInMinutes = CacheExpireInMinutes
         };
     }
 }

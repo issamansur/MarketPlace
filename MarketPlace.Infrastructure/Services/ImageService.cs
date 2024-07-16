@@ -15,9 +15,6 @@ public class ImageService: IImageService
     
     private int MaxImageSize => _optionsImageService.MaxSizeMb * 1024 * 1024;
     public IReadOnlyCollection<string> AllowedExtensions => _optionsImageService.AllowedExtensions.AsReadOnly();
-    public int CacheExpireInMinutes => _optionsImageService.CacheExpireInMinutes;
-    
-    //public ImageServiceOptions Options => _optionsImageService.Clone() as ImageServiceOptions ?? new ImageServiceOptions();
     
     public ImageService(
         IOptions<StaticFilesOptions> optionsStaticFiles,

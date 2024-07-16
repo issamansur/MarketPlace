@@ -3,7 +3,6 @@ namespace MarketPlace.Application.Services;
 public interface IImageService
 {
     // Is better to use Options instead of properties
-    int CacheExpireInMinutes { get; }
     IReadOnlyCollection<string> AllowedExtensions { get; }
     Task SaveImageAsync(Stream image, string imagePath, CancellationToken cancellationToken);
     Task DeleteImageAsync(string imagePath, CancellationToken cancellationToken);

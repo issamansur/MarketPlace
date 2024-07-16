@@ -1,23 +1,25 @@
 using MarketPlace.Application.Services;
 using MarketPlace.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 
 namespace MarketPlace.WebAPI.Middlewares;
 
 public class ImageResizingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IWebHostEnvironment _env;
     
     private readonly IImageService _imageService;
+    private readonly StaticFilesOptions _staticFileOptions;
 
     public ImageResizingMiddleware(
-        RequestDelegate next, IWebHostEnvironment env, 
-        IImageService imageService
+        RequestDelegate next, 
+        IImageService imageService,
+        IOptions<StaticFilesOptions> options
     )
     {
         _next = next;
-        _env = env;
         _imageService = imageService;
+        _staticFileOptions = options.Value;
     }
     
     CancellationToken GetCancellationToken(HttpContext? context) => (context?.RequestAborted ?? CancellationToken.None);
@@ -26,7 +28,7 @@ public class ImageResizingMiddleware
     {
         var cancellationToken = GetCancellationToken(context);
         
-        var requestPath = context.Request.Path.Value!;
+        var requestPath = context!.Request.Path.Value!;
 
         // If the request is not an image, pass it to the next middleware
         if (!IsImageRequest(requestPath))
@@ -83,7 +85,7 @@ public class ImageResizingMiddleware
     
     private void SetCacheHeaders(HttpContext context)
     {
-        context.Response.Headers.CacheControl = $"public, max-age={_imageService.CacheExpireInMinutes * 60}";
-        context.Response.Headers.Expires = DateTime.UtcNow.AddMinutes(_imageService.CacheExpireInMinutes).ToString("R");
+        context.Response.Headers.CacheControl = $"public, max-age={_staticFileOptions. CacheExpireInMinutes * 60}";
+        context.Response.Headers.Expires = DateTime.UtcNow.AddMinutes(_staticFileOptions.CacheExpireInMinutes).ToString("R");
     }
 }

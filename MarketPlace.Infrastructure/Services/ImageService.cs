@@ -55,13 +55,13 @@ public class ImageService: IImageService
         await image.CopyToAsync(fileStream, cancellationToken);
     }
 
-    public async Task DeleteImageAsync(string imagePath, CancellationToken cancellationToken)
+    public void DeleteImage(string imagePath)
     {
         var fullPath = GetPath(imagePath);
         
         if (File.Exists(fullPath))
         {
-            await Task.Run(() => File.Delete(fullPath), cancellationToken);
+            File.Delete(fullPath);
         }
     }
     

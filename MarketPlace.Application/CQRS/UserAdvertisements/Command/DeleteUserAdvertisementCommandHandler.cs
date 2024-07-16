@@ -25,9 +25,9 @@ public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
             throw new UnauthorizedAccessException(ApplicationErrors.UnauthorizedAccessError);
         }
         
-        await _imageService.DeleteImageAsync(userAdvertisement.ImageUrl, cancellationToken);
-        
         await tenant.UserAdvertisements.DeleteAsync(userAdvertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);
+        
+        _imageService.DeleteImage(userAdvertisement.ImageUrl);
     }
 }

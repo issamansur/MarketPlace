@@ -1,4 +1,4 @@
-namespace MarketPlace.Application.CQRS.AdvertisementReviews.Queries;
+namespace MarketPlace.Application.Features.AdvertisementReviews.Queries;
 
 public class GetReviewsByAdvertisementQueryHandler : BaseHandler,
     IRequestHandler<GetReviewsByAdvertisementQuery, IEnumerable<AdvertisementReview>>

@@ -1,5 +1,5 @@
-using MarketPlace.Application.CQRS.AdvertisementReviews.Filters;
 using MarketPlace.Application.Enums;
+using MarketPlace.Application.Features.AdvertisementReviews.Queries.Filters;
 
 namespace MarketPlace.Infrastructure.Data.Repositories;
 

@@ -1,4 +1,4 @@
-namespace MarketPlace.Application.CQRS.AdvertisementReviews.Filters;
+namespace MarketPlace.Application.Features.AdvertisementReviews.Queries.Filters;
 
 public class AdvertisementReviewsFilterValidator: AbstractValidator<AdvertisementReviewsFilter>
 {

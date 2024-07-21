@@ -1,6 +1,6 @@
 using MarketPlace.Application.Services;
 
-namespace MarketPlace.Application.CQRS.UserAdvertisements.Command;
+namespace MarketPlace.Application.Features.UserAdvertisements.Command;
 
 public class UpdateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<UpdateUserAdvertisementCommand>
 {

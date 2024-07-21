@@ -1,9 +1,9 @@
-using MarketPlace.Application.CQRS.UserAdvertisements.Filters;
+using MarketPlace.Application.Features.UserAdvertisements.Queries.Filters;
 using MarketPlace.Application.Options;
 using MarketPlace.Application.Services;
 using Microsoft.Extensions.Options;
 
-namespace MarketPlace.Application.CQRS.UserAdvertisements.Command;
+namespace MarketPlace.Application.Features.UserAdvertisements.Command;
 
 public class CreateUserAdvertisementCommandHandler: BaseHandler, IRequestHandler<CreateUserAdvertisementCommand, Guid>
 {

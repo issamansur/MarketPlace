@@ -1,4 +1,4 @@
-namespace MarketPlace.Application.CQRS.UserAdvertisements.Queries;
+namespace MarketPlace.Application.Features.UserAdvertisements.Queries;
 
 public class GetUserAdvertisementQueryValidator: AbstractValidator<GetUserAdvertisementQuery>
 {

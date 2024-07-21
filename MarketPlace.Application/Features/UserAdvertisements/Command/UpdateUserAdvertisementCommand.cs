@@ -1,4 +1,4 @@
-namespace MarketPlace.Application.CQRS.UserAdvertisements.Command;
+namespace MarketPlace.Application.Features.UserAdvertisements.Command;
 
 public class UpdateUserAdvertisementCommand: IRequest
 {

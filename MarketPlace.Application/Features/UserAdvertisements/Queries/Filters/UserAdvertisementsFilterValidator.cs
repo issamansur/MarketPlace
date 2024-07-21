@@ -1,11 +1,11 @@
-namespace MarketPlace.Application.CQRS.UserAdvertisements.Filters;
+namespace MarketPlace.Application.Features.UserAdvertisements.Queries.Filters;
 
-public class UserAdvertisementsByUserFilterValidator: AbstractValidator<UserAdvertisementsByUserFilter>
+public class UserAdvertisementsFilterValidator: AbstractValidator<UserAdvertisementsFilter>
 {
-    public UserAdvertisementsByUserFilterValidator()
+    public UserAdvertisementsFilterValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("UserId is required.");
+        RuleFor(x => x.Query)
+            .NotNull().WithMessage(ApplicationErrors.InvalidQueryError);
         
         RuleFor(x => x.Page)
             .GreaterThan(0).WithMessage(ApplicationErrors.InvalidPageError);

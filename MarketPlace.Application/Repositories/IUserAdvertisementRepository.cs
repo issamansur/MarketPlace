@@ -1,4 +1,4 @@
-using MarketPlace.Application.CQRS.UserAdvertisements.Filters;
+using MarketPlace.Application.Features.UserAdvertisements.Queries.Filters;
 
 namespace MarketPlace.Application.Repositories;
 

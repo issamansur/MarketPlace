@@ -1,6 +1,6 @@
-using MarketPlace.Application.CQRS.UserAdvertisements.Command;
-using MarketPlace.Application.CQRS.UserAdvertisements.Filters;
-using MarketPlace.Application.CQRS.UserAdvertisements.Queries;
+using MarketPlace.Application.Features.UserAdvertisements.Command;
+using MarketPlace.Application.Features.UserAdvertisements.Queries;
+using MarketPlace.Application.Features.UserAdvertisements.Queries.Filters;
 
 namespace MarketPlace.Infrastructure.Mappings;
 

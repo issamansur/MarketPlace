@@ -1,6 +1,6 @@
-using MarketPlace.Application.CQRS.UserAdvertisements.Filters;
+using MarketPlace.Application.Features.UserAdvertisements.Queries.Filters;
 
-namespace MarketPlace.Application.CQRS.UserAdvertisements.Queries;
+namespace MarketPlace.Application.Features.UserAdvertisements.Queries;
 
 public class GetAllUserAdvertisementsQuery: IRequest<IEnumerable<UserAdvertisement>>
 {

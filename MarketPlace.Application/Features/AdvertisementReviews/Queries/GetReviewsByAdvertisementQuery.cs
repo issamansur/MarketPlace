@@ -1,6 +1,6 @@
-using MarketPlace.Application.CQRS.AdvertisementReviews.Filters;
+using MarketPlace.Application.Features.AdvertisementReviews.Queries.Filters;
 
-namespace MarketPlace.Application.CQRS.AdvertisementReviews.Queries;
+namespace MarketPlace.Application.Features.AdvertisementReviews.Queries;
 
 public class GetReviewsByAdvertisementQuery: IRequest<IEnumerable<AdvertisementReview>>
 {

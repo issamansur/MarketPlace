@@ -1,4 +1,4 @@
-namespace MarketPlace.Application.CQRS.AdvertisementReviews.Commands;
+namespace MarketPlace.Application.Features.AdvertisementReviews.Commands;
 
 public class DeleteAdvertisementReviewCommandValidator: AbstractValidator<DeleteAdvertisementReviewCommand>
 {

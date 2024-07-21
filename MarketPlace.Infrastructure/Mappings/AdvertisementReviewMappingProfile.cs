@@ -1,6 +1,6 @@
-using MarketPlace.Application.CQRS.AdvertisementReviews.Commands;
-using MarketPlace.Application.CQRS.AdvertisementReviews.Filters;
-using MarketPlace.Application.CQRS.AdvertisementReviews.Queries;
+using MarketPlace.Application.Features.AdvertisementReviews.Commands;
+using MarketPlace.Application.Features.AdvertisementReviews.Queries;
+using MarketPlace.Application.Features.AdvertisementReviews.Queries.Filters;
 
 namespace MarketPlace.Infrastructure.Mappings;
 

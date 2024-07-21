@@ -8,7 +8,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace MarketPlace.Infrastructure.Services;
 
-public class ImageService: IImageService
+public class PhysicalImageService: IImageService
 {
     private readonly StaticFilesOptions _optionsStaticFiles;
     private readonly ImageServiceOptions _optionsImageService;
@@ -16,7 +16,7 @@ public class ImageService: IImageService
     private int MaxImageSize => _optionsImageService.MaxSizeMb * 1024 * 1024;
     public IReadOnlyCollection<string> AllowedExtensions => _optionsImageService.AllowedExtensions.AsReadOnly();
     
-    public ImageService(
+    public PhysicalImageService(
         IOptions<StaticFilesOptions> optionsStaticFiles,
         IOptions<ImageServiceOptions> optionsImageService
     )
@@ -55,7 +55,7 @@ public class ImageService: IImageService
         await image.CopyToAsync(fileStream, cancellationToken);
     }
 
-    public void DeleteImage(string imagePath)
+    public Task DeleteImageAsync(string imagePath, CancellationToken cancellationToken = default)
     {
         var fullPath = GetPath(imagePath);
         
@@ -63,6 +63,8 @@ public class ImageService: IImageService
         {
             File.Delete(fullPath);
         }
+
+        return Task.CompletedTask;
     }
     
     public async Task<Stream> GetResizedImageAsync(string imagePath, int width, int height, CancellationToken cancellationToken)

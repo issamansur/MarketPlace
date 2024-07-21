@@ -28,6 +28,6 @@ public class DeleteUserAdvertisementCommandHandler: BaseHandler, IRequestHandler
         await tenant.UserAdvertisements.DeleteAsync(userAdvertisement, cancellationToken);
         await tenant.CommitAsync(cancellationToken);
         
-        _imageService.DeleteImage(userAdvertisement.ImageUrl);
+        await _imageService.DeleteImageAsync(userAdvertisement.ImageUrl, cancellationToken);
     }
 }

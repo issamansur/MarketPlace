@@ -1,8 +1,8 @@
 using System.Net;
-using MarketPlace.WebAPI.Models;
+using Amazon.S3;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace MarketPlace.WebAPI.Middlewares;
+namespace MarketPlace.WebAPI.Middlewares.ExceptionHandler;
 
 public class GlobalExceptionHandler: IExceptionHandler
 { private readonly ILogger<GlobalExceptionHandler> _logger;
@@ -26,10 +26,15 @@ public class GlobalExceptionHandler: IExceptionHandler
         };
         switch (exception)
         {
+            case FileNotFoundException:
+                errorResponse.StatusCode = (int)HttpStatusCode.NotFound;
+                errorResponse.Title = exception.GetType().Name;
+                break;
             case ArgumentNullException:
             case ApplicationException:
             case InvalidOperationException:
             case FluentValidation.ValidationException:
+            case AmazonS3Exception:
                 errorResponse.StatusCode = (int)HttpStatusCode.BadRequest;
                 errorResponse.Title = exception.GetType().Name;
                 break;

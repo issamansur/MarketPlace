@@ -1,4 +1,4 @@
-namespace MarketPlace.WebAPI.Models;
+namespace MarketPlace.WebAPI.Middlewares.ExceptionHandler;
 
 public class ErrorResponse
 {

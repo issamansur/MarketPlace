@@ -29,22 +29,18 @@ public class ImageResizingMiddleware
         var cancellationToken = GetCancellationToken(context);
         
         var requestPath = context!.Request.Path.Value!;
-
+        
+        // Remove the base path of static files from the request path
+        var basePath = _staticFileOptions.RequestPath;
+        if (requestPath.StartsWith(basePath))
+        {
+            requestPath = requestPath[basePath.Length..];
+        }
+        var imagePath = requestPath.TrimStart('/');
+        Console.WriteLine(imagePath);
+        
         // If the request is not an image, pass it to the next middleware
         if (!IsImageRequest(requestPath))
-        {
-            await _next(context);
-            return;
-        }
-        
-        
-        var imagePath = Path.Combine(
-            Directory.GetCurrentDirectory(),
-            requestPath.TrimStart('/')
-        );
-        
-        // If the image does not exist, pass the request to the next middleware
-        if (!File.Exists(imagePath))
         {
             await _next(context);
             return;
@@ -70,7 +66,6 @@ public class ImageResizingMiddleware
         // If image exists and width and height were specified, resize the image
         var stream = await _imageService.GetResizedImageAsync(imagePath, widthValue, heightValue, cancellationToken);
         
-        stream.Position = 0;
         context.Response.ContentType = "image/jpeg";
 
         SetCacheHeaders(context);

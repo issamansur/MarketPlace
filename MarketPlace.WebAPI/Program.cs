@@ -2,10 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Amazon.S3;
 using MarketPlace.Application.DI;
 using MarketPlace.Infrastructure.Data;
 using MarketPlace.Infrastructure.Options;
 using MarketPlace.WebAPI.Middlewares;
+using MarketPlace.WebAPI.Middlewares.ExceptionHandler;
+using MarketPlace.WebAPI.Middlewares.S3FileProvider;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -79,8 +83,9 @@ var cacheExpireInMinutes = staticFilesOptions.CacheExpireInMinutes;
 app.UseStaticFiles(
     new StaticFileOptions
     {
-        FileProvider = new PhysicalFileProvider(
-            staticFilesRealPathFull
+        FileProvider = new S3FileProvider(
+            app.Services.GetRequiredService<IAmazonS3>(),
+            app.Configuration.GetSection(nameof(AWSOptions)).Get<AWSOptions>()!.ImageBucketName
         ),
         RequestPath = staticFilesRequestPath,
         OnPrepareResponse = ctx =>
